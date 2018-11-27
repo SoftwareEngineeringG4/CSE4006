@@ -1,17 +1,20 @@
 import os
 from flask import Flask, render_template
+from dbconn import curs
 
-
-template_dir = os.path.abspath(os.path.join(
+#  SETTING DEFAULT TEMPLATES PATH
+DEFAULT_TMP = os.path.abspath(os.path.join(
     os.path.dirname(__file__), "../src/templates/"))
-print(template_dir)
-app = Flask(__name__, template_folder=template_dir)
+
+app = Flask(__name__, template_folder=DEFAULT_TMP)
 
 
 @app.route("/")
 def hello():
-    print(template_dir)
-    return render_template('index.html')
+    sql = "desc BlackList;"
+    curs.execute(sql)
+    version = curs.fetchall()
+    return render_template('index.html', tb_desc=version[0])
 
 
 @app.route("/hello")
