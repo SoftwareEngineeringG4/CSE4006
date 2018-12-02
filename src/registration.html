@@ -97,7 +97,7 @@
   <nav id="topMenu">
       <ul>
           <li class="topMenuLi">
-              <a class="menuLink" href="main.html">HOME</a>
+              <a class="menuLink" href="{{ url_for('main_page') }}">HOME</a>
               <ul class="submenu">
                   <li><a href="resistration.html" class="submenuLink longLink">회원가입</a></li>
                   <li><a href="login.html" class="submenuLink longLink">로그인</a></li>
@@ -152,47 +152,47 @@
                 <label class="col-sm-3 control-label" for="inputNumberCheck">아이디 입력</label>
                 <div class="col-sm-6">
                     <div class="input-group">
-                        <input class="form-control" id="inputNumberCheck" type="text" placeholder="아이디">
+                        <input class="form-control" id="inputNumberCheck" name="person_id" type="text" placeholder="아이디" required>
                         <span class="input-group-btn">
-                <button class="btn btn-success" type="button">중복확인<i class="fa fa-edit spaceLeft"></i></button>
-              </span>
-                    </div>
+                            <button class="btn btn-success" type="button">중복확인<i class="fa fa-edit spaceLeft"></i></button>
+                        </span>
+                </div>
                     <!--<p class="help-block">전송된 인증번호를 입력해주세요.</p>-->
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label" for="inputName">이름</label>
                 <div class="col-sm-6">
-                    <input class="form-control" id="inputName" type="text" placeholder="이름">
+                    <input class="form-control" id="inputName" name="name" type="text" placeholder="이름">
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label" for="inputName">주민등록번호</label>
                 <div class="col-sm-6">
-                    <input class="form-control" id="id_number" type="text" placeholder="주민등록번호">
+                    <input class="form-control" id="id_number" name="idNumber" type="text" placeholder="주민등록번호">
                 </div>
             </div>
-        <div class="form-group">
-          <label class="col-sm-3 control-label" for="inputEmail">이메일</label>
-        <div class="col-sm-6">
-          <input class="form-control" id="inputEmail" type="email" placeholder="이메일">
-        </div>
-        </div>
-        <div class="form-group">
-          <label class="col-sm-3 control-label" for="inputPassword">비밀번호</label>
-        <div class="col-sm-6">
-          <input class="form-control" id="inputPassword" type="password" placeholder="비밀번호">
-        <p class="help-block">숫자, 특수문자 포함 8자 이상</p>
-        </div>
-        </div>
-          <div class="form-group">
-              <label class="col-sm-3 control-label" for="inputPasswordCheck">비밀번호 확인</label>
-             <div class="col-sm-6">
-              <input class="form-control" id="inputPasswordCheck" type="password" placeholder="비밀번호 확인">
-                <p class="help-block">비밀번호를 한번 더 입력해주세요.</p>
-             </div>
-          </div>
-          <div class="form-group">
+            <div class="form-group">
+              <label class="col-sm-3 control-label" for="inputEmail">이메일</label>
+                <div class="col-sm-6">
+                  <input class="form-control" id="inputEmail" name="email" type="email" placeholder="이메일" required>
+                </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label" for="inputPassword">비밀번호</label>
+                <div class="col-sm-6">
+                  <input class="form-control" id="inputPassword" name="password" type="password" placeholder="비밀번호" required>
+                <p class="help-block">숫자, 특수문자 포함 8자 이상</p>
+                </div>
+            </div>
+            <div class="form-group">
+                  <label class="col-sm-3 control-label" for="inputPasswordCheck">비밀번호 확인</label>
+                 <div class="col-sm-6">
+                  <input class="form-control" id="inputPasswordCheck" type="password" placeholder="비밀번호 확인" required>
+                    <p class="help-block">비밀번호를 한번 더 입력해주세요.</p>
+                 </div>
+            </div>
+            <div class="form-group">
               <label class="col-sm-3 control-label" for="inputAgree">약관 동의</label>
             <div class="col-sm-6" data-toggle="buttons">
               <label class="btn btn-warning active">
@@ -201,13 +201,9 @@
               </label>
               <a href="#">이용약관</a> 에 동의 합니다.
             </div>
-          </div>
-        <div class="form-group">
-          <div class="col-sm-12 text-center">
-            <button class="btn btn-primary" type="submit">회원가입<i class="fa fa-check spaceLeft"></i></button>
-            <button class="btn btn-danger" type="submit">가입취소<i class="fa fa-times spaceLeft"></i></button>
-          </div>
-        </div>
+            </div>
+            <button class="btn btn-primary" type="submit"><i class="fa fa-check spaceLeft">회원가입</i></button>
+            <button class="btn btn-danger" type="reset"><i class="fa fa-times spaceLeft">가입취소</i></button>
         </form>
           <hr>
         </div>

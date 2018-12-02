@@ -1,5 +1,5 @@
 from flask import redirect, url_for, flash, session
-from dbconn import curs
+from dbconn import curs, conn
 
 
 class UserInfo:
@@ -68,7 +68,7 @@ class UserInfo:
                 flash('Account Created!')
                 curs.execute(UserInfo.InsertQuery,
                              (user_id, pwss, user_name, email, identifyNum, ))
-                curs.commit()
+                conn.commit()
             else:
                 error = "Already Exist"
         return error

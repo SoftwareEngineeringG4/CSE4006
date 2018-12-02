@@ -20,6 +20,7 @@ app.config.update(dict(
 def render_redirect(template, url, error):
     if error is None:
         return redirect(url_for(url))
+    print(error)
     return render_template(template, error=error)
 
 
@@ -49,7 +50,7 @@ def register():
         else:
             user = UserInfo(email)
             error = user.Register(user_id, pwss, user_name, email, identifyNum)
-        return render_redirect('registration.html', 'register', error)
+        return render_redirect('main.html', 'main_page', error)
     else:
         return render_template('registration.html')
 
@@ -82,9 +83,9 @@ def check_myinfo():
     return render_template("myinfo.html")
 
 
-@app.route("/MyPosts", methods=['POST'])
+@app.route("/MyPosts", methods=['GET', 'POST'])
 def check_mypost():
-    return render_template("myinfo.html")
+    return render_template("index.html")
 
 
 @app.route("/board/<board_name>", methods=['GET'])
@@ -95,6 +96,7 @@ def board_open(board_name):
 @app.route("/admin_page", methods=['POST'])
 def admin():
     return render_template("admin.html")
+
 
 @app.route("/write_post/<board_name>", methods=['GET', 'POST'])
 def write_post(board_name):
