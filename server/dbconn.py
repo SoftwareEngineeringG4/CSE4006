@@ -7,10 +7,10 @@ PASSWORD = 'swcse4006'
 DB_NAME = 'CS_Community'
 CHAR_SET = 'utf8'
 
-#  MySQL Connection 연결
+#  MySQL Connection
 conn = pymysql.connect(host=IP_VAL, user=USER, password=PASSWORD,
                        db=DB_NAME, charset=CHAR_SET)
 print(conn)
 
-# Connection 으로부터 Cursor 생성
+# Connection to make cursor
 curs = conn.cursor()

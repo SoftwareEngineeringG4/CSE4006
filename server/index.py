@@ -1,51 +1,72 @@
 import os
 from flask import Flask, render_template, url_for, redirect, request
+from users import UserInfo
 from dbconn import curs
 
 #  SETTING DEFAULT TEMPLATES PATH
 DEFAULT_TMP = os.path.abspath(os.path.join(
-    os.path.dirname(__file__), "../src/templates/"))
+    os.path.dirname(__file__), "../src/"))
 
-app = Flask(__name__, template_folder=DEFAULT_TMP)
+DEFAULT_CSS = os.path.abspath(os.path.join(
+    os.path.dirname(__file__), "../src/"))
+
+
+app = Flask(__name__, template_folder=DEFAULT_TMP, static_folder=DEFAULT_CSS)
+#  app.config.update(dict(DEBUG=True))
 
 
 def render_redirect(template, url, error):
-    if error == None:
+    if error is None:
         return redirect(url_for(url))
     return render_template(template, error=error)
 
 
 @app.route("/")
-@app.route("/main", methods=['GET', 'POST'])
+@app.route("/main")
 def main_page():
-    sql = "desc Post;"
-    curs.execute(sql)
-    version = curs.fetchall()
-    return render_template('index.html', tb_desc=version)
+    curs.execute("desc User;")
+    for i in range(6):
+        print(curs.fetchone()[0])
+    curs.execute("SELECT * FROM User;")
+    print(curs.fetchall())
+    return render_template('index.html')
 
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
+    error = None
     if request.method == 'POST':
-        id = request.form['personid']
-        email = request.form['email']
-        name = request.form['username']
-        pwss = request.form['password']
-        pwsc = request.form['passconf']
+        user_id = request.form['person_id']  # login id
+        pwss = request.form['password']  # password
+        user_name = request.form['name']  # your personal name
+        email = request.form['email']  # your eamil
+        identifyNum = request.form['idNumber']  # local personal number
 
-        if "" in [email, name, pwss, pwsc]:
+        if "" in [user_id, pwss, user_name, email, identifyNum]:
             error = 'Empty Filed'
         else:
-            #  user = User(email)
-            #  error = user.signup(email, name, pwss, pwsc)
-        return render_template('signup.html')
+            user = UserInfo(email)
+            error = user.Register(user_id, pwss, user_name, email, identifyNum)
+        return render_redirect('registration.html', 'register', error)
     else:
-        return render_template('main.html')
+        return render_template('registration.html')
 
 
-@app.route("/login")
+@app.route("/login", methods=['GET', 'POST'])
 def login():
-    return render_template("login.html")
+    error = None
+    if request.method == 'POST':
+        user_id = request.form['person_id']
+        pwss = request.form['password']
+        print(user_id, pwss)
+        if "" in [user_id, pwss]:
+            error = 'Empty Filed'
+        else:
+            user = UserInfo(user_id)
+            error = user.Login(pwss)
+        return render_redirect('login.html', 'main', error)
+    else:
+        return render_template('login.html')
 
 
 @app.route("/logout")
@@ -53,29 +74,29 @@ def logout():
     return redirect(url_for('main_page'))
 
 
-@app.route("/MyInfo", methods='POST')
+@app.route("/MyInfo", methods=['GET'])
 def change_myinfo():
     return redirect(url_for('main_page'))
 
 
-@app.route("/board/<board_name>", methods='GET')
+@app.route("/board/<board_name>", methods=['GET'])
 def board_open(board_name):
     return render_template(board_name+".html")
 
 
-@app.route("/admin_page", methods='POST')
+@app.route("/admin_page", methods=['POST'])
 def admin():
     return render_template("admin.html")
 
 
-@app.route("/write_post/<board_name>", methods='POST')
+@app.route("/write_post/<board_name>", methods=['POST'])
 def write_post(board_name):
-    return render_template("admin.html")
+    return render_template(board_name+".html")
 
 
-@app.route("/modify_post/<board_name>", methods='POST')
+@app.route("/modify_post/<board_name>", methods=['POST'])
 def modify_post(board_name):
-    return render_template("admin.html")
+    return render_template(board_name+".html")
 
 
 if __name__ == '__main__':

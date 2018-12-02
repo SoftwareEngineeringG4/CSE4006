@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}">
     <style>
         #topMenu {
             height: 30px;
@@ -86,9 +86,9 @@
         <li class="topMenuLi">
             <a class="menuLink" href="main.html">HOME</a>
             <ul class="submenu">
-                <li><a href="resistration.html" class="submenuLink longLink">회원가입</a></li>
-                <li><a href="login.html" class="submenuLink longLink">로그인</a></li>
-                <li><a href="findPassword.html" class="submenuLink longLink">비밀번호찾기</a></li>
+                <li><a href="{{ url_for('register') }}" class="submenuLink longLink">회원가입</a></li>
+                <li><a href="{{ url_for('login') }}" class="submenuLink longLink">로그인</a></li>
+                <li><a href="{{ url_for('main_page') }}" class="submenuLink longLink">비밀번호찾기</a></li>
             </ul>
         </li>
         <li>|</li>
@@ -169,6 +169,6 @@
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min,js"></script>
-<script type="text/javascript" src="js/bootstrap.js"></script>
+<script type="text/javascript" src=" {{ url_for('static', filename='js/bootstrap.js') }}"></script>
 </body>
 </html>
