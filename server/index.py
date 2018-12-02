@@ -1,18 +1,20 @@
 import os
-from flask import Flask, render_template, url_for, redirect, request
+from flask import Flask, render_template, url_for, redirect, request, session
 from users import UserInfo
 from dbconn import curs
 
 #  SETTING DEFAULT TEMPLATES PATH
-DEFAULT_TMP = os.path.abspath(os.path.join(
-    os.path.dirname(__file__), "../src/"))
-
-DEFAULT_CSS = os.path.abspath(os.path.join(
+DEFAULT_PATH = os.path.abspath(os.path.join(
     os.path.dirname(__file__), "../src/"))
 
 
-app = Flask(__name__, template_folder=DEFAULT_TMP, static_folder=DEFAULT_CSS)
-#  app.config.update(dict(DEBUG=True))
+app = Flask(__name__, template_folder=DEFAULT_PATH, static_folder=DEFAULT_PATH)
+app.config.update(dict(
+    DEBUG=True,
+    SECRET_KEY='development key',
+    USERNAME='admin',
+    PASSWORD='default'
+))
 
 
 def render_redirect(template, url, error):
@@ -29,7 +31,7 @@ def main_page():
         print(curs.fetchone()[0])
     curs.execute("SELECT * FROM User;")
     print(curs.fetchall())
-    return render_template('index.html')
+    return render_template('main.html')
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -40,7 +42,7 @@ def register():
         pwss = request.form['password']  # password
         user_name = request.form['name']  # your personal name
         email = request.form['email']  # your eamil
-        identifyNum = request.form['idNumber']  # local personal number
+        identifyNum = request.form['idNumber']  # local number
 
         if "" in [user_id, pwss, user_name, email, identifyNum]:
             error = 'Empty Filed'
@@ -64,19 +66,25 @@ def login():
         else:
             user = UserInfo(user_id)
             error = user.Login(pwss)
-        return render_redirect('login.html', 'main', error)
+        return render_redirect('login.html', 'main_page', error)
     else:
         return render_template('login.html')
 
 
 @app.route("/logout")
 def logout():
+    session.pop('logged_in', None)
     return redirect(url_for('main_page'))
 
 
-@app.route("/MyInfo", methods=['GET'])
-def change_myinfo():
-    return redirect(url_for('main_page'))
+@app.route("/MyInfo", methods=['GET', 'POST'])
+def check_myinfo():
+    return render_template("myinfo.html")
+
+
+@app.route("/MyPosts", methods=['POST'])
+def check_mypost():
+    return render_template("myinfo.html")
 
 
 @app.route("/board/<board_name>", methods=['GET'])
@@ -88,10 +96,14 @@ def board_open(board_name):
 def admin():
     return render_template("admin.html")
 
-
-@app.route("/write_post/<board_name>", methods=['POST'])
+@app.route("/write_post/<board_name>", methods=['GET', 'POST'])
 def write_post(board_name):
-    return render_template(board_name+".html")
+    error = None
+    if request.method == 'POST':
+        return render_template(board_name+".html")
+    else:
+        error = "not logged in"
+        return render_template("main.html", "main_page", error)
 
 
 @app.route("/modify_post/<board_name>", methods=['POST'])

@@ -147,7 +147,7 @@
         <div class="page-header text-center">
     	    <h1>회원가입</h1>
         </div>
-        <form class="form-horizontal">
+        <form class="form-horizontal" action="{{ url_for('register') }}" method="POST">
             <div class="form-group">
                 <label class="col-sm-3 control-label" for="inputNumberCheck">아이디 입력</label>
                 <div class="col-sm-6">
