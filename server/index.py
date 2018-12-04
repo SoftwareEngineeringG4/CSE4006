@@ -1,20 +1,7 @@
-import os
-from flask import Flask, render_template, url_for, redirect, request, session
+from header import app
+from flask import render_template, url_for, redirect, request, session
 from users import UserInfo
 from dbconn import curs
-
-#  SETTING DEFAULT TEMPLATES PATH
-DEFAULT_PATH = os.path.abspath(os.path.join(
-    os.path.dirname(__file__), "../src/"))
-
-
-app = Flask(__name__, template_folder=DEFAULT_PATH, static_folder=DEFAULT_PATH)
-app.config.update(dict(
-    DEBUG=True,
-    SECRET_KEY='development key',
-    USERNAME='admin',
-    PASSWORD='default'
-))
 
 
 def render_redirect(template, url, error):
@@ -74,8 +61,11 @@ def login():
 
 @app.route("/logout")
 def logout():
-    session.pop('logged_in', None)
-    return redirect(url_for('main_page'))
+    error = UserInfo(session.get).Logout()
+    if error is False:
+        return redirect(url_for('main_page'))
+    else:
+        return render_redirect('main.html', 'main_page', error)
 
 
 @app.route("/MyInfo", methods=['GET', 'POST'])
@@ -111,7 +101,3 @@ def write_post(board_name):
 @app.route("/modify_post/<board_name>", methods=['POST'])
 def modify_post(board_name):
     return render_template(board_name+".html")
-
-
-if __name__ == '__main__':
-    app.run('0.0.0.0', port=5000)

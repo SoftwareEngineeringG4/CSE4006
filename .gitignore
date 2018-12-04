@@ -1,2 +1,4 @@
 goorm.manifest
 manifest.yml
+*.pyc
+__pycache__/
