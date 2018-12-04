@@ -1,5 +1,5 @@
 from flask import redirect, url_for, flash, session
-from dbconn import curs, conn
+from db.dbconn import curs, conn
 
 
 class UserInfo:

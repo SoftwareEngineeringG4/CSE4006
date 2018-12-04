@@ -1,7 +1,7 @@
 from header import app
 from flask import render_template, url_for, redirect, request, session
-from users import UserInfo
-from dbconn import curs
+from controller.userinfo import UserInfo
+#  from db.dbconn import curs
 
 
 def render_redirect(template, url, error):
@@ -14,11 +14,13 @@ def render_redirect(template, url, error):
 @app.route("/")
 @app.route("/main")
 def main_page():
+    '''
     curs.execute("desc User;")
     for i in range(6):
         print(curs.fetchone()[0])
     curs.execute("SELECT * FROM User;")
     print(curs.fetchall())
+    '''
     return render_template('main.html')
 
 
@@ -101,3 +103,8 @@ def write_post(board_name):
 @app.route("/modify_post/<board_name>", methods=['POST'])
 def modify_post(board_name):
     return render_template(board_name+".html")
+
+
+@app.route("/search", methods=['GET', 'POST'])
+def search_all():
+    return render_template("search.html")
