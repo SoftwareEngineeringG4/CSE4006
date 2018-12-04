@@ -1,5 +1,5 @@
 from flask import redirect, url_for, flash, session
-from dbconn import curs, conn
+from db.dbconn import curs, conn
 
 
 class UserInfo:
@@ -78,5 +78,11 @@ class UserInfo:
         return redirect(url_for('mypage'))
 
     def Logout(self):
-        error = None
-        return redirect(url_for('signin'))
+        print("Check Logout...")
+        try:
+            if 'logged_in' in session:
+                session.pop('logged_in', None)
+                self.sign_in = False
+            return True
+        except:
+            return True
