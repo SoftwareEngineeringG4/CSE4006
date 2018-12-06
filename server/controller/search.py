@@ -1,4 +1,5 @@
 from db.dbconn import curs
+from controller.board import Board
 
 
 class Search:
@@ -10,14 +11,18 @@ class Search:
     '''
 
     def __init__(self, keyword):
-        self.serach_word = keyword
-        self.board_name = ""
+        self.search_word = keyword
         self.board_num = 0
         self.post_name = ""
 
-    def FindPost(self):
-        sql1 = "SELECT (board_name, ) FROM " + self.board_num + "WHERE 
-        sql2 = ""
-
-        curs.execute()
+    def FindPost(self, bid):
+        boardList = Board(bid).GetPostList()
+        findList = []
+        for board in boardList:
+            searchQuery = "SELECT `title`, `contents`, `write_time`, `writer` \
+                    FROM " + board + " WHERE `title` = " + self.search_word + " OR \
+                    `contents` = " + self.search_word + ";"
+            curs.execute(searchQuery)
+            findList += curs.fetchall()
+        return findList
 
