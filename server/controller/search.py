@@ -15,8 +15,8 @@ class Search:
         self.board_num = 0
         self.post_name = ""
 
-    def FindPost(self, bid):
-        boardList = Board(bid).GetPostList()
+    def FindPost(self):
+        boardList = Board.GetPostList()
         findList = []
         for board in boardList:
             searchQuery = "SELECT `title`, `contents`, `write_time`, `writer` \
@@ -25,4 +25,3 @@ class Search:
             curs.execute(searchQuery)
             findList += curs.fetchall()
         return findList
-

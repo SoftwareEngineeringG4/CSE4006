@@ -8,28 +8,23 @@ class Board:
         self.board_name = board_name
         self.write_auth = write_auth
 
-    def GetBlackList(self):
+    def GetBlackList():
         sql = "SELECT * FROM `BlackList`;"
         list = []
         curs.execute(sql)
         list = curs.fetchall()
         return list
 
-    def GetPostList(self):
-        sql1 = "SELECT * FROM `Board`;"
+    def GetPostList():  # Use At Search Part
+        sql1 = "SELECT * FROM `Board`;"  # Attribute bid, board_name, auth
         list = []
         curs.execute(sql1)
         list = curs.fetchall()
         return list
 
-    def AddPost(self, title, contents, writer):
-        InsertPost = "INSERT INTO " + self.board_name + " (`title`, `contents`, `writer`)\
-                      VALUES (" + title + contents + writer + ");"
+    def AddBoard(self):
+        InsertBoard = "INSERT INTO `Board` (`board_name`, `write_auth`) VALUES \
+                       (" + self.board_name + self.write_auth + ");"
 
-        InsertBoard = "INSERT INTO `Board` (`bid`, `board_name`, `write_name`) VALUES \
-                       (" + self.bid + self.board_name + self.write_auth + ");"
-
-        curs.execute(InsertPost)
         curs.execute(InsertBoard)
         curs.commit()
-
