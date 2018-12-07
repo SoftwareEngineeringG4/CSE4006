@@ -14,10 +14,12 @@ def render_redirect(template, url, error):
 @app.route("/")
 @app.route("/main")
 def main_page():
-    curs.execute("desc User;")
-    for i in range(6):
-        print(curs.fetchone()[0])
-    curs.execute("SELECT * FROM User;")
+    curs.execute("show create table Post;")
+    print(curs.fetchall())
+    curs.execute("desc Post;")
+    for i in range(5):
+        print(curs.fetchone())
+    curs.execute("SELECT * FROM Post;")
     print(curs.fetchall())
     return render_template('main.html')
 
@@ -105,4 +107,5 @@ def modify_post(board_name):
 
 @app.route("/search", methods=['GET', 'POST'])
 def search_all():
-    return render_template("search.html")
+    search_value = request.form['aaaa']
+    return render_template("search.html",search=search_value)
