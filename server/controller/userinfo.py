@@ -28,7 +28,7 @@ class UserInfo:
 
     def Login(self, pwss):
         error = None
-        loginQuery = ("SELECT name FROM User WHERE person_id=\'"
+        loginQuery = ("SELECT `name` FROM `User` WHERE `person_id`=\'"
                       + self.user_id + "\'")
         print(loginQuery)
         self.selectquery = u"SELECT EXISTS (" + UserInfo.userIdCheck + u")"
