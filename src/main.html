@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}" media="screen" title="no title" charset="utf-8">
     <!-- Custom style -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" media="screen" title="no title" charset="utf-8">
+    
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/navbar.css') }}">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -20,78 +22,6 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <style>
-        #topMenu {
-            height: 30px;
-            width: 770px;       /* [변경] 하위 메뉴와 동일하게 맞춤 */
-            position: relative;
-            background-color: #2D2D2D; /* [추가] 늘어난만큼 배경색도 보이도록 수정 */
-        }
-        #topMenu ul {           /* 메인 메뉴 안의 ul을 설정함: 상위메뉴의 ul+하위 메뉴의 ul */
-            list-style-type: none;
-            margin: 0px;
-            padding: 0px;
-        }
-        #topMenu ul li {            /* 메인 메뉴 안에 ul 태그 안에 있는 li 태그의 스타일 적용(상위/하위메뉴 모두) */
-            color: white;
-            background-color: #2d2d2d;
-            float: left;
-            line-height: 30px;
-            vertical-align: middle;
-            text-align: center;
-            -position: relative;
-        }
-        .menuLink, .submenuLink {           /* 상위 메뉴와 하위 메뉴의 a 태그에 공통으로 설정할 스타일 */
-            text-decoration:none;
-            display: block;
-            width: 150px;
-            font-size: 12px;
-            font-weight: bold;
-            font-family: "Trebuchet MS", Dotum;
-        }
-        .menuLink {     /* 상위 메뉴의 글씨색을 흰색으로 설정 */
-            color: white;
-        }
-        .topMenuLi:hover .menuLink {    /* 상위 메뉴의 li에 마우스오버 되었을 때 스타일 설정 */
-            color: red;
-            background-color: #4d4d4d;
-        }
-        .longLink {     /* 좀 더 긴 메뉴 스타일 설정 */
-            width: 190px;
-        }
-        .submenuLink {          /* 하위 메뉴의 a 태그 스타일 설정 */
-            color: #2d2d2d;
-            background-color: #DDD;      /* [변경] 배경색 변경 */
-            -border: solid 1px black;    /* [삭제] 테두리 삭제 */
-            -margin-right: -1px;         /* [삭제] 공백 보정 삭제 */
-        }
-        .submenu {              /* 하위 메뉴 스타일 설정 */
-            position: absolute;
-            height: 0px;
-            overflow: hidden;
-            transition: height .2s;
-            -webkit-transition: height .2s;
-            -moz-transition: height .2s;
-            -o-transition: height .2s;
-            width: 770px;
-            left: 0;
-
-
-            background-color: #DDD; /* [추가] 하위 메뉴 전체에 배경색 설정 */
-        }
-        .submenu li {
-            display: inline-block;
-
-
-        }
-        .topMenuLi:hover .submenu {
-            height: 102px;
-        }
-        .submenuLink:hover {
-            color: red;
-            background-color: #dddddd;
-        }
-    </style>
 </head>
 <body>
 <center>

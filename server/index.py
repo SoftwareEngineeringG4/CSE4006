@@ -15,7 +15,7 @@ def render_redirect(template, url, error):
 @app.route("/main", methods=['GET', 'POST'])
 def main_page():
     auth = 3
-    if request.methods == 'POST':
+    if request.method == 'POST':
         auth = admin.AdminInfo(session.get['person_id']).CheckAuth()
     return render_template('main.html', auth=auth)
 
