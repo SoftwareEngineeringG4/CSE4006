@@ -60,17 +60,11 @@
                     </div>
                 </ul>
             </li>
+            {% for listValue in list %}
             <li>|</li>
             <li class="topMenuLi">
-                <a class="menuLink" href="index.html">게시판1</a>
-            <li>|</li>
-            <li class="topMenuLi">
-                <a class="menuLink" href="index.html">게시판2</a>
-            </li>
-            <li>|</li>
-            <li class="topMenuLi">
-                <a class="menuLink" href="index.html">게시판3</a>
-            </li>
+                <a class="menuLink" href="{{ url_for('board_open', board_name=listValue[1]) }}">{{ listValue[1] }}</a>
+            {% endfor %}
         </ul>
     </nav>
 
@@ -86,7 +80,7 @@
     </ul>
 
     <table width="100%" border="0" cellspacing="0" cellpadding="0" summary="공지사항을 나타낸 표" class="board_list">
-        <caption>공지사항</caption>
+        <caption>{{ board_name }}</caption>
         <colgroup>
             <col style="width:8%" />
             <col style="width:68" />
@@ -102,47 +96,18 @@
         </tr>
         </thead>
         <tbody>
-        <tr class="notice">
-            <td>공지</td>
-            <td class="tLeft"><a href="#">원숭이 엉덩이는 빨개</a></td>
-            <td>KyuHan</td>
-            <td>2015-09-03</td>
-        </tr>
-        <tr class="notice">
-            <td>공지</td>
-            <td class="tLeft"><a href="#">빨가면 사과 사과는 맛있어</a></td>
-            <td>KyuHan</td>
-            <td>2015-09-03</td>
-        </tr>
+        {% for values in board %}
         <tr>
-            <td>48</td>
-            <td class="tLeft"><a href="#">카카오톡 오픈 등록 친구추가</a></td>
-            <td>nunu</td>
-            <td>2015-09-03</td>
+            <td>{{ values[0] }}</td>
+            <td class="tLeft"><a href="{{ url_for('spec_post', board_name=board_name, lists=values) }}">{{ values[1] }}</a></td>
+            <td>{{ values[4] }}</td>
+            <td>{{ values[3] }}</td>
         </tr>
-        <tr>
-            <td>47</td>
-            <td class="tLeft"><a href="#">아뜨랑스 오픈 등록 친구추가</a></td>
-            <td>bebe</td>
-            <td>2015-09-01</td>
-        </tr>
-        <tr>
-            <td>46</td>
-            <td class="tLeft"><a href="#">아뜨랑스 카카오톡 친구추가</a></td>
-            <td>attrangs</td>
-            <td>2015-09-03</td>
-        </tr>
-        <tr>
-            <td>45</td>
-            <td class="tLeft"><a href="#">아뜨랑스 카카오톡 오픈 등록 친구추가</a></td>
-            <td>platinum</td>
-            <td>2015-09-03</td>
-        </tr>
-
+        {% endfor %}
         </tbody>
     </table>
 
-    <!-- page_navi start -->
+    <!-- page_navi start 
     <div class="page_navi">
         <a href="#" class="first">처음</a>
         <a href="#" class="prev">이전</a>
@@ -157,7 +122,7 @@
         <a href="#" class="next">다음</a>
         <a href="#" class="last">마지막</a>
     </div>
-    <!-- page_navi end -->
+    page_navi end -->
 
 
     </div>

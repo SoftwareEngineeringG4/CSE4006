@@ -76,16 +76,28 @@ class UserInfo:
                 error = "Already Exist"
         return error
 
-    def ChangeUserInfo(self):
-        error = None
-        return error
-
     def Logout(self):
         error = None
         print("Check Logout...")
         if self.user_id:
-            session.pop('logged_in', None)
+            session.clear()
             self.sign_in = False
             flash('logged out')
             error = "logout!!"
         return error
+
+    def GetMyInfo(self):
+        myinfoQuery = "SELECT password, name, email, idNumber\
+                    FROM User WHERE person_id = %s"
+
+        curs.execute(myinfoQuery, (self.user_id, ))
+        values = curs.fetchall()[0]
+        return values
+
+    def GetMyPost(self):
+        myinfoQuery = "SELECT title, contents, write_time, writer \
+                    FROM Post WHERE writer = %s"
+
+        curs.execute(myinfoQuery, (self.user_id, ))
+        values = curs.fetchall()
+        return values

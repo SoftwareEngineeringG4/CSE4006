@@ -24,6 +24,7 @@
       
   </head>
   <body>
+<center>
   <nav id="topMenu">
       <ul>
           <li class="topMenuLi">
@@ -68,20 +69,13 @@
                     </div>
                 </ul>
             </li>
-          <li>|</li>
-          <li class="topMenuLi">
-              <a class="menuLink" href="index.html">게시판1</a>
-          <li>|</li>
-          <li class="topMenuLi">
-              <a class="menuLink" href="index.html">게시판2</a>
-          </li>
-          <li>|</li>
-          <li class="topMenuLi">
-              <a class="menuLink" href="index.html">게시판3</a>
-          </li>
+          {% for listValue in list %}
+            <li>|</li>
+            <li class="topMenuLi">
+                <a class="menuLink" href="{{ url_for('board_open', board_name=listValue[1]) }}">{{ listValue[1] }}</a>
+            {% endfor %}
       </ul>
   </nav>
-
       <article class="container">
         <div class="col-md-12">
         <div class="page-header text-center">
@@ -148,7 +142,7 @@
           <hr>
         </div>
       </article>
-
+      </center>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->

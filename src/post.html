@@ -70,34 +70,26 @@
             {% endfor %}
         </ul>
     </nav>
-
+<br>
 
 <div class="container">
     <table class="table table-striped">
         <thead>
-        <center><h1>글쓰기</h1></center>
+        <center><h1>{{ board_name }}</h1></center>
         </thead>
         <tbody>
-        <form action="{{ url_for('write_post') }}" method="POST" encType="multiplart/form-data">
             <tr>
                 <th>제목: </th>
-                <td><input type="text" placeholder="제목을 입력하세요. " name="subject" class="form-control"/></td>
+                <td>{{ title }}</td>
             </tr>
             <tr>
                 <th>내용: </th>
-                <td><textarea cols="10" rows="20" placeholder="내용을 입력하세요. " name="content" class="form-control"></textarea></td>
+                <td>{{ contents }}</td>
             </tr>
             <tr>
-                <td colspan="2">
-                    <button class="btn btn-primary float-left pull-right" type="submit">Post</button>
-
-
-                    <!-- <a class="btn btn-default" onclick="sendData()"> 등록 </a>
-                    <a class="btn btn-default" type="reset"> reset </a>
-                    <a class="btn btn-default" onclick="javascript:location.href='list.jsp'">글 목록으로...</a> -->
-                </td>
+                <th>작성자: </th>
+                <td>{{ writer }}</td>
             </tr>
-        </form>
         </tbody>
     </table>
 </div>
