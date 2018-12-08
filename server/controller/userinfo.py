@@ -73,6 +73,24 @@ class UserInfo:
                 error = "Already Exist"
         return error
 
+    def idValidCheck(self, candidate_user_id):
+        error = None
+        message = 0
+
+        if candidate_user_id == "":
+            error = "No Input"
+        else:
+            self.selectquery = u"SELECT EXISTS (" + UserInfo.userIdCheck + u")"
+            curs.execute(self.selectquery, (candidate_user_id, ))
+            userid_ = curs.fetchone()
+
+            if userid_[0] == 0:
+                message = 1
+            else:
+                message = 0
+
+        return message, error
+
     def ChangeUserInfo(self):
         error = None
         return redirect(url_for('mypage'))
