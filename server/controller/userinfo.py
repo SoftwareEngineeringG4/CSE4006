@@ -76,7 +76,6 @@ class UserInfo:
                 error = "Already Exist"
         return error
 
-<<<<<<< HEAD
     def idValidCheck(self, candidate_user_id):
         error = None
         message = 0
@@ -99,8 +98,7 @@ class UserInfo:
         error = None
         return redirect(url_for('mypage'))
 
-=======
->>>>>>> upstream/master
+
     def Logout(self):
         error = None
         print("Check Logout...")
