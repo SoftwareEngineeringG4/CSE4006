@@ -8,13 +8,13 @@ def render_redirect(template, url, error):
     if error is None:
         return redirect(url_for(url))
     print(error)
-    return render_template(template, error=error, auth=3)
+    return render_template(template, error=error, auth=0)
 
 
 @app.route("/")
 @app.route("/main", methods=['GET', 'POST'])
 def main_page():
-    auth = 3
+    auth = 0
     if request.method == 'POST':
         auth = admin.AdminInfo(session.get['person_id']).CheckAuth()
     return render_template('main.html', auth=auth)
@@ -59,7 +59,7 @@ def login():
 
 @app.route("/logout")
 def logout():
-    error = userinfo.UserInfo(session.get['person_id']).Logout()
+    error = userinfo.UserInfo(session.get).Logout()
     if error is False:
         return redirect(url_for('main_page'))
     else:

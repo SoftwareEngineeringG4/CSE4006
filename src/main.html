@@ -39,7 +39,7 @@
                         <li><a href="{{ url_for('login') }}" class="submenuLink longLink">로그인</a></li>
                         <li><a href="{{ url_for('main_page') }}" class="submenuLink longLink">비밀번호찾기</a></li>
                         {% if auth %}
-                            <li><a href="{{ url_for('administration') }}" class="submenuLink longLink">관리자페이지</a></li>
+                            <li><a href="{{ url_for('admin_page') }}" class="submenuLink longLink">관리자페이지</a></li>
                         {% endif %}
                     {% endif %}
                 </ul>
@@ -91,6 +91,13 @@
             </li>
         </ul>
     </nav>
+    {% for message in get_flashed_messages() %}
+      <br/>
+      <div class="alert alert-info alert-dismissable">
+        <a herf="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+        {{ message }}
+      </div>
+    {% endfor %}
     <img src="{{ url_for('static', filename='img/icon.jpeg') }}">
 <p>안녕 클레오파트라! 세상에서 제일 가는 포테이토칩!</p>
 <br>
