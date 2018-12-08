@@ -32,6 +32,7 @@ class UserInfo:
                       + self.user_id + "\'")
         print(loginQuery)
         self.selectquery = u"SELECT EXISTS (" + UserInfo.userIdCheck + u")"
+        print(self.user_id)
         curs.execute(self.selectquery, (self.user_id, ))
         userid_ = curs.fetchone()
         if userid_[0] == 0:
@@ -58,6 +59,7 @@ class UserInfo:
             error = "Filed is Empty!"
         else:
             self.selectquery = u"SELECT EXISTS (" + UserInfo.checkEmail + u")"
+            print(email)
             curs.execute(self.selectquery, (email, ))
             email_ = curs.fetchone()
             self.selectquery = u"SELECT EXISTS (" + UserInfo.checkName + u")"

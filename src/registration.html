@@ -15,13 +15,110 @@
     <link rel="stylesheet" href="{{ url_for('static', filename = 'css/style.css') }}" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/navbar.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='js/reigster.js') }}"></script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-      
+<script>
+    function validate() {
+       var re = /^[a-zA-Z0-9]{4,8}$/ // 아이디와 패스워드가 적합한지 검사할 정규식
+       var re2 = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+       // 이메일이 적합한지 검사할 정규식
+       
+       var id = document.getElementById("id");
+       var name = document.getElementById("name");
+       var pw = document.getElementById("password");
+       var checkpw = document.getElementById("passwordCheck");
+       var email = document.getElementById("email");
+       var num2 = document.getElementById("id_number");
+       var agree = document.getElementById("agree");
+
+       console.log(agree);
+       var arrNum1 = new Array(); // 주민번호 앞자리숫자 6개를 담을 배열
+       var arrNum2 = new Array(); // 주민번호 뒷자리숫자 7개를 담을 배열
+
+       // ------------ 이메일 까지 -----------
+
+       if(!check(re,id,"아이디는 4~8자의 영문 대소문자와 숫자로만 입력")) {
+           return false;
+       }
+
+       if(!check(re,pw,"패스워드는 4~8자의 영문 대소문자와 숫자로만 입력")) {
+           return false;
+       }
+
+       if(pw.value != checkpw.value) {
+           alert("비밀번호가 다릅니다. 다시 확인해 주세요.");
+           checkpw.value = "";
+           checkpw.focus();
+           return false;
+       }
+           // -------------- 주민번호 -------------
+
+        for (var i=0; i<6; i++) {
+            arrNum1[i] = num2.value.charAt(i);
+        } // 주민번호 앞자리를 배열에 순서대로 담는다.
+ 
+        for (var i=6; i<13; i++) {
+            arrNum2[i-6] = num2.value.charAt(i);
+        } // 주민번호 뒷자리를 배열에 순서대로 담는다.
+ 
+        var tempSum=0;
+ 
+        for (var i=0; i<6; i++) {
+            tempSum += arrNum1[i] * (2+i);
+        } // 주민번호 검사방법을 적용하여 앞 번호를 모두 계산하여 더함
+ 
+        for (var i=0; i<6; i++) {
+            if(i>=2) {
+                tempSum += arrNum2[i] * i;
+            }
+            else {
+                tempSum += arrNum2[i] * (8+i);
+            }
+        } // 같은방식으로 앞 번호 계산한것의 합에 뒷번호 계산한것을 모두 더함
+ 
+        if((11-(tempSum%11))%10!=arrNum2[6]) {
+            alert("올바른 주민번호가 아닙니다.");
+
+            num2.value = "";
+            num2.focus();
+            return false;
+        }
+
+       if(email.value=="") {
+           alert("이메일을 입력해 주세요");
+           email.focus();
+           return false;
+       }
+
+       if(!check(re2, email, "적합하지 않은 이메일 형식입니다.")) {
+           return false;
+       }
+
+       if(name.value=="") {
+           alert("이름을 입력해 주세요");
+           name.focus();
+           return false;
+       }
+       
+    
+    alert("회원가입이 완료되었습니다.");
+}
+
+function check(re, what, message) {
+    if(re.test(what.value)) {
+        return true;
+    }
+    alert(message);
+    what.value = "";
+    what.focus();
+    //return false;
+}
+    </script>
   </head>
   <body>
   <nav id="topMenu">
@@ -94,56 +191,58 @@
         <div class="page-header text-center">
     	    <h1>회원가입</h1>
         </div>
-        <form class="form-horizontal" action="{{ url_for('register') }}" method="POST">
+        <form class="form-horizontal" action="{{ url_for('register') }}" method="POST" onsubmit="return validate();">
+        
             <div class="form-group">
-                <label class="col-sm-3 control-label" for="inputNumberCheck">아이디 입력</label>
+                <label class="col-sm-3 control-label" for="id">아이디 입력</label>
                 <div class="col-sm-6">
                     <div class="input-group">
-                        <input class="form-control" id="inputNumberCheck" name="person_id" type="text" placeholder="아이디" required>
+                        <input class="form-control" id="id" name="person_id" type="text" placeholder="아이디">
                         <span class="input-group-btn">
-                            <button class="btn btn-success" type="button">중복확인<i class="fa fa-edit spaceLeft"></i></button>
+                            <button class="btn btn-success" type="submit">중복확인<i class="fa fa-edit spaceLeft"></i></button>
                         </span>
                 </div>
                     <!--<p class="help-block">전송된 인증번호를 입력해주세요.</p>-->
                 </div>
             </div>
+        
             <div class="form-group">
-                <label class="col-sm-3 control-label" for="inputName">이름</label>
+                <label class="col-sm-3 control-label" for="name">이름</label>
                 <div class="col-sm-6">
-                    <input class="form-control" id="inputName" name="name" type="text" placeholder="이름">
+                    <input class="form-control" id="name" name="name" type="text" placeholder="이름">
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label" for="inputName">주민등록번호</label>
+                <label class="col-sm-3 control-label" for="id_number">주민등록번호</label>
                 <div class="col-sm-6">
                     <input class="form-control" id="id_number" name="idNumber" type="text" placeholder="주민등록번호">
                 </div>
             </div>
             <div class="form-group">
-              <label class="col-sm-3 control-label" for="inputEmail">이메일</label>
+              <label class="col-sm-3 control-label" for="email">이메일</label>
                 <div class="col-sm-6">
-                  <input class="form-control" id="inputEmail" name="email" type="email" placeholder="이메일" required>
+                  <input class="form-control" id="email" name="email" type="text" placeholder="이메일">
                 </div>
             </div>
             <div class="form-group">
-              <label class="col-sm-3 control-label" for="inputPassword">비밀번호</label>
+              <label class="col-sm-3 control-label" for="password">비밀번호</label>
                 <div class="col-sm-6">
-                  <input class="form-control" id="inputPassword" name="password" type="password" placeholder="비밀번호" required>
+                  <input class="form-control" id="password" name="password" type="password" placeholder="비밀번호">
                 <p class="help-block">숫자, 특수문자 포함 8자 이상</p>
                 </div>
             </div>
             <div class="form-group">
-                  <label class="col-sm-3 control-label" for="inputPasswordCheck">비밀번호 확인</label>
+                  <label class="col-sm-3 control-label" for="passwordCheck">비밀번호 확인</label>
                  <div class="col-sm-6">
-                  <input class="form-control" id="inputPasswordCheck" type="password" placeholder="비밀번호 확인" required>
+                  <input class="form-control" id="passwordCheck" type="password" placeholder="비밀번호 확인">
                     <p class="help-block">비밀번호를 한번 더 입력해주세요.</p>
                  </div>
             </div>
             <div class="form-group">
-              <label class="col-sm-3 control-label" for="inputAgree">약관 동의</label>
+              <label class="col-sm-3 control-label" for="agree">약관 동의</label>
             <div class="col-sm-6" data-toggle="buttons">
               <label class="btn btn-warning active">
-                <input id="agree" type="checkbox" autocomplete="off" chacked>
+                <input id="agree" type="checkbox" autocomplete="off" checked required>
                   <span class="fa fa-check"></span>
               </label>
               <a href="#">이용약관</a> 에 동의 합니다.
