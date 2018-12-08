@@ -73,13 +73,13 @@
         </ul>
     </nav>
 </center>
-    {% for message in get_flashed_messages() %}
-      <br/>
-      <div class="alert alert-info alert-dismissable">
-        <a herf="#" class="close" data-dismiss="alert" aria-label="close">x</a>
-        {{ message }}
-      </div>
-    {% endfor %}
+{% for message in get_flashed_messages() %}
+    <br/>
+    <div class="alert alert-info alert-dismissable">
+    <a herf="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+    {{ message }}
+    </div>
+{% endfor %}
 <div class="login-page">
     <div class="form">
         <form class="register-form">
