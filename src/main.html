@@ -108,6 +108,9 @@
                         <li><a href="{{ url_for('register') }}" class="submenuLink longLink">회원가입</a></li>
                         <li><a href="{{ url_for('login') }}" class="submenuLink longLink">로그인</a></li>
                         <li><a href="{{ url_for('main_page') }}" class="submenuLink longLink">비밀번호찾기</a></li>
+                        {% if auth %}
+                            <li><a href="{{ url_for('administration') }}" class="submenuLink longLink">관리자페이지</a></li>
+                        {% endif %}
                     {% endif %}
                 </ul>
             </li>
@@ -163,7 +166,6 @@
 <br>
 <p>안녕 클레오파트라! 세상에서 제일 가는 포테이토칩!</p>
 </center>
-
 </body>
 <footer class="fixed-bottom">
     <small>&copy; Copyright 2018, CS Corporation</small>

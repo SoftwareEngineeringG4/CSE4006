@@ -80,7 +80,7 @@ class UserInfo:
     def Logout(self):
         print("Check Logout...")
         try:
-            if 'logged_in' in session:
+            if self.user_id:
                 session.pop('logged_in', None)
                 self.sign_in = False
             return True
