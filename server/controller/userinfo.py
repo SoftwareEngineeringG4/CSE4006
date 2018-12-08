@@ -1,4 +1,4 @@
-from flask import redirect, url_for, flash, session
+from flask import flash, session
 from db.dbconn import curs, conn
 
 
@@ -42,13 +42,16 @@ class UserInfo:
             pwss_ = curs.fetchone()
             if pwss_[0] == pwss:
                 error = "Invalid"
+                flash('Invalid')
             else:
                 session['logged_in'] = True
                 session['person_id'] = self.user_id
                 self.signed_in = True
                 curs.execute(loginQuery.encode("utf-8"))
                 self.name = curs.fetchone()
-                flash('Welcom ' + self.name[0])
+                flash('Welcome ' + self.name[0])
+                error = None
+        print(error)
         return error
 
     def Register(self, user_id, pwss, user_name, email, identifyNum):
@@ -73,6 +76,7 @@ class UserInfo:
                 error = "Already Exist"
         return error
 
+<<<<<<< HEAD
     def idValidCheck(self, candidate_user_id):
         error = None
         message = 0
@@ -95,12 +99,30 @@ class UserInfo:
         error = None
         return redirect(url_for('mypage'))
 
+=======
+>>>>>>> upstream/master
     def Logout(self):
+        error = None
         print("Check Logout...")
-        try:
-            if self.user_id:
-                session.pop('logged_in', None)
-                self.sign_in = False
-            return True
-        except:
-            return True
+        if self.user_id:
+            session.clear()
+            self.sign_in = False
+            flash('logged out')
+            error = "logout!!"
+        return error
+
+    def GetMyInfo(self):
+        myinfoQuery = "SELECT password, name, email, idNumber\
+                    FROM User WHERE person_id = %s"
+
+        curs.execute(myinfoQuery, (self.user_id, ))
+        values = curs.fetchall()[0]
+        return values
+
+    def GetMyPost(self):
+        myinfoQuery = "SELECT title, contents, write_time, writer \
+                    FROM Post WHERE writer = %s"
+
+        curs.execute(myinfoQuery, (self.user_id, ))
+        values = curs.fetchall()
+        return values

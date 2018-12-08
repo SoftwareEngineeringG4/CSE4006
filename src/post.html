@@ -41,14 +41,14 @@
                     <div class="container">
                         <div class="row justify-content-center">
                             <div class="col-12 col-md-10 col-lg-8">
-                                <form action="/herehere" class="card card-sm" method="post">
+                                <form class="card card-sm">
                                     <div class="card-body row no-gutters align-items-center">
                                         <div class="col-auto">
                                             <i class="fas fa-search h4 text-body"></i>
                                         </div>
                                         <!--end of col-->
                                         <div class="col">
-                                            <input class="form-control form-control-lg form-control-borderless" name ="search" type="search" placeholder="Search topics or keywords">
+                                            <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords">
                                         </div>
                                         <!--end of col-->
                                         <div class="col-auto">
@@ -70,41 +70,26 @@
             {% endfor %}
         </ul>
     </nav>
-
+<br>
 
 <div class="container">
     <table class="table table-striped">
         <thead>
-        <center><h1>글쓰기</h1></center>
-        {% for message in get_flashed_messages() %}
-      <br/>
-      <div class="alert alert-info alert-dismissable">
-        <a herf="#" class="close" data-dismiss="alert" aria-label="close">x</a>
-        {{ message }}
-      </div>
-        {% endfor %}
+        <center><h1>{{ board_name }}</h1></center>
         </thead>
         <tbody>
-        <form action="{{ url_for('write_post') }}" method="POST" encType="multiplart/form-data">
             <tr>
                 <th>제목: </th>
-                <td><input type="text" placeholder="제목을 입력하세요. " name="subject" class="form-control"/></td>
+                <td>{{ title }}</td>
             </tr>
             <tr>
                 <th>내용: </th>
-                <td><textarea cols="10" rows="20" placeholder="내용을 입력하세요. " name="content" class="form-control"></textarea></td>
+                <td>{{ contents }}</td>
             </tr>
             <tr>
-                <td colspan="2">
-                    <button class="btn btn-primary float-left pull-right" type="submit">Post</button>
-
-
-                    <!-- <a class="btn btn-default" onclick="sendData()"> 등록 </a>
-                    <a class="btn btn-default" type="reset"> reset </a>
-                    <a class="btn btn-default" onclick="javascript:location.href='list.jsp'">글 목록으로...</a> -->
-                </td>
+                <th>작성자: </th>
+                <td>{{ writer }}</td>
             </tr>
-        </form>
         </tbody>
     </table>
 </div>
