@@ -1,27 +1,23 @@
 from header import app
 from flask import render_template, url_for, redirect, request, session
-from controller.userinfo import UserInfo
-from db.dbconn import curs
+from controller import userinfo, admin, adminManager, board, boardManager, search
+#  from db.dbconn import curs
 
 
 def render_redirect(template, url, error):
     if error is None:
         return redirect(url_for(url))
     print(error)
-    return render_template(template, error=error)
+    return render_template(template, error=error, auth=3)
 
 
 @app.route("/")
-@app.route("/main")
+@app.route("/main", methods=['GET', 'POST'])
 def main_page():
-    curs.execute("show create table Post;")
-    print(curs.fetchall())
-    curs.execute("desc Post;")
-    for i in range(5):
-        print(curs.fetchone())
-    curs.execute("SELECT * FROM Post;")
-    print(curs.fetchall())
-    return render_template('main.html')
+    auth = 3
+    if request.methods == 'POST':
+        auth = admin.AdminInfo(session.get['person_id']).CheckAuth()
+    return render_template('main.html', auth=auth)
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -37,7 +33,7 @@ def register():
         if "" in [user_id, pwss, user_name, email, identifyNum]:
             error = 'Empty Filed'
         else:
-            user = UserInfo(email)
+            user = userinfo.UserInfo(email)
             error = user.Register(user_id, pwss, user_name, email, identifyNum)
         return render_redirect('main.html', 'main_page', error)
     else:
@@ -54,7 +50,7 @@ def login():
         if "" in [user_id, pwss]:
             error = 'Empty Filed'
         else:
-            user = UserInfo(user_id)
+            user = userinfo.UserInfo(user_id)
             error = user.Login(pwss)
         return render_redirect('login.html', 'main_page', error)
     else:
@@ -63,7 +59,7 @@ def login():
 
 @app.route("/logout")
 def logout():
-    error = UserInfo(session.get).Logout()
+    error = userinfo.UserInfo(session.get['person_id']).Logout()
     if error is False:
         return redirect(url_for('main_page'))
     else:
@@ -86,8 +82,11 @@ def board_open(board_name):
 
 
 @app.route("/admin_page", methods=['POST'])
-def admin():
-    return render_template("admin.html")
+def admin_page():
+    auth = True
+    if request.methods == 'POST':
+        auth = admin.AdminInfo(session.get['person_id']).CheckAuth()
+    return render_template("admin.html", auth=auth)
 
 
 @app.route("/write_post/<board_name>", methods=['GET', 'POST'])
@@ -108,4 +107,4 @@ def modify_post(board_name):
 @app.route("/search", methods=['GET', 'POST'])
 def search_all():
     search_value = request.form['aaaa']
-    return render_template("search.html",search=search_value)
+    return render_template("search.html", search=search_value)

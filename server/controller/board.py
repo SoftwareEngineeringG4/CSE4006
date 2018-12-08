@@ -25,6 +25,5 @@ class Board:
     def AddBoard(self):
         InsertBoard = "INSERT INTO `Board` (`board_name`, `write_auth`) VALUES \
                        (" + self.board_name + self.write_auth + ");"
-
         curs.execute(InsertBoard)
         curs.commit()
