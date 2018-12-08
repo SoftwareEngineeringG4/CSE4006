@@ -1,14 +1,18 @@
 from header import app
 from flask import render_template, url_for, redirect, request, session
-from controller import userinfo, admin, adminManager, board, boardManager, search
+from controller import userinfo, admin, adminManager, board
+from controller import boardManager, search, userinfoManager
 #  from db.dbconn import curs
+
+
+defaultList = board.Board.GetBoardList()
 
 
 def render_redirect(template, url, error):
     if error is None:
         return redirect(url_for(url))
     print(error)
-    return render_template(template, error=error, auth=0)
+    return render_template(template, error=error, auth=0, list=defaultList)
 
 
 @app.route("/")
@@ -17,7 +21,7 @@ def main_page():
     auth = 0
     if request.method == 'POST':
         auth = admin.AdminInfo(session.get['person_id']).CheckAuth()
-    return render_template('main.html', auth=auth)
+    return render_template('main.html', auth=auth, list=defaultList)
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -37,7 +41,7 @@ def register():
             error = user.Register(user_id, pwss, user_name, email, identifyNum)
         return render_redirect('main.html', 'main_page', error)
     else:
-        return render_template('registration.html')
+        return render_template('registration.html', list=defaultList)
 
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -54,7 +58,7 @@ def login():
             error = user.Login(pwss)
         return render_redirect('login.html', 'main_page', error)
     else:
-        return render_template('login.html')
+        return render_template('login.html', list=defaultList)
 
 
 @app.route("/logout")
@@ -66,19 +70,45 @@ def logout():
         return render_redirect('main.html', 'main_page', error)
 
 
-@app.route("/MyInfo", methods=['GET', 'POST'])
+@app.route("/MyInfo", methods=['POST'])
 def check_myinfo():
-    return render_template("myinfo.html")
+    myinfo = userinfoManager(session['person_id']).userInfoManager()
+    print(myinfo)
+    return render_template("myinfo.html", myinfo=myinfo, list=defaultList)
 
 
 @app.route("/MyPosts", methods=['GET', 'POST'])
 def check_mypost():
-    return render_template("index.html")
+    if request.method == 'POST':
+        mypost = userinfo.getMyInfo()
+        print(mypost)
+        return render_template("index.html", mypost=mypost, list=defaultList)
+    else:
+        render_redirect("main.html", 'main_page', "Valid error")
 
 
 @app.route("/board/<board_name>", methods=['GET'])
 def board_open(board_name):
-    return render_template(board_name+".html")
+    list = board.Board.GetPostList(board_name)
+    print(list)
+    return render_template("noticeboard.html",
+                           list=defaultList, board=list, board_name=board_name)
+
+
+@app.route("/post/<board_name>/<path:lists>")
+def spec_post(board_name, lists):
+    '''
+    print(lists.replace(")", "").replace("(","").replace("'", "").split(","))
+    print(board_name)
+    title = lists[1]
+    contents = lists[2]
+    writer = lists[4]
+    print(title)
+    print(contents)
+    '''
+    return render_template("post.html", list=defaultList,
+                           board_name=board_name,
+                           title=title, contents=contents, writer=writer)
 
 
 @app.route("/admin_page", methods=['POST'])
@@ -87,50 +117,72 @@ def admin_page():
     error = None
 
     if request.methods == 'POST':
-        auth = admin.AdminInfo(session.get['person_id']).CheckAuth()
+        auth = admin.AdminInfo(session.get).CheckAuth()
         adminMng = adminManager.Admin()
-
-        if request.form['sub_button'] == 'adminAdd':
+        button_val = request.form['sub_button']
+        if button_val == 'adminAdd':
             target_user_id = request.form['user_name']
             error = adminMng.AdminAppointment(target_user_id)
 
-        elif request.form['sub_button'] == 'adminRemove':
+        elif button_val == 'adminRemove':
             target_user_id = request.form['user_name']
             error = adminMng.AdminRemove(target_user_id)
 
-        elif request.form['sub_button'] == 'boardCreate':
+        elif button_val == 'boardCreate':
             target_board_name = request.form['board_name']
             error = adminMng.boardCreate(target_board_name)
 
-        elif request.form['sub_button'] == 'addToBlackList':
+        elif button_val == 'addToBlackList':
             target_user_id = request.form['user_name']
             target_board_name = request.form['board_name']
             error = adminMng.AddBlackList(target_board_name, target_user_id)
 
-        elif request.form['sub_button'] == 'removeFromBlackList':
+        elif button_val == 'removeFromBlackList':
             target_user_id = request.form['user_name']
             target_board_name = request.form['board_name']
-            error = adminMng.removeFromBlackList(target_board_name, target_user_id)
+            error = adminMng.removeFromBlackList(target_board_name,
+                                                 target_user_id)
 
-    return render_template("admin.html", auth=auth, error)
+    return render_template("admin.html",
+                           auth=auth, error=error, list=defaultList)
 
 
 @app.route("/write_post/<board_name>", methods=['GET', 'POST'])
 def write_post(board_name):
     error = None
+    auth = False
     if request.method == 'POST':
-        return render_template(board_name+".html")
-    else:
-        error = "not logged in"
-        return render_template("main.html", "main_page", error)
+        title = request.form['subject']
+        contents = request.form['content']
+        writer = session['person_id']
+        error = board.AddPost(board_name, title, contents, writer)
+        if error is not False:
+            return render_template(board_name+".html",
+                                   error=error, auth=auth, list=defaultList)
+        else:
+            return render_template(board_name + ".html",
+                                   error=error, list=defaultList)
 
 
 @app.route("/modify_post/<board_name>", methods=['POST'])
 def modify_post(board_name):
-    return render_template(board_name+".html")
+    error = None
+    auth = False
+    if request.method == 'POST':
+        title = request.form['subject']
+        contents = request.form['content']
+        writer = session['person_id']
+        error = board.ModifyPost(board_name, title, contents, writer)
+        if error is not False:
+            return render_template("write.html",
+                                   error=error, auth=auth, list=defaultList)
+        else:
+            return render_template("write.html",
+                                   error=error, list=defaultList)
 
 
 @app.route("/search", methods=['GET', 'POST'])
 def search_all():
     search_value = request.form['aaaa']
-    return render_template("search.html", search=search_value)
+    return render_template("search.html",
+                           search=search_value, list=defaultList)

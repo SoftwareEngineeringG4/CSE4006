@@ -3,35 +3,34 @@ from db.dbconn import curs, conn
 
 class BoardManager:
 
-    postCheck = u"SELECT `auth` FROM `User` WHERE `person_id` = %s"
-
     def __init__(self):
         self.selectquery = ""
 
     def AddPost(board_name, title, contents, writer):
-        InsertPost = "INSERT INTO " + board_name + " (`title`, `contents`, `writer`)\
-                      VALUES (" + title + contents + writer + ");"
-        curs.execute(InsertPost)
-        curs.commit()
+        error = None
+        InsertPost = "INSERT INTO %s (`title`, `contents`, `writer`)\
+                      VALUES (%s, %s, %s, );"
+        curs.execute(InsertPost, (board_name, title, contents, writer, ))
+        if conn.commit() is False:
+            error = False
+        else:
+            error = "Success Insert!!"
+        return error
 
     def ModifyPost(self, title, contents, target_user_id):
         error = None
         ModifyQuery = "UPDATE `Post` SET `title` = %s,\
                     contents = %s WHERE person_id = %s"
-        if target_user_id == "":
-            error = "Invalid!"
+        curs.execute(ModifyQuery, (title, contents, target_user_id, ))
+        if conn.commit() is False:
+            error = "error"
         else:
-            self.selectquery = u"SELECT EXISTS (" + self.postCheck + u")"
-            curs.execute(self.selectquery, (target_user_id, ))
-            userid_ = curs.fetchone()
-
-            if userid_[0] == 0:
-                error = "No data"
-            else:
-                curs.execute(ModifyQuery, (title, contents, ))
-                conn.commit()
+            error = "update your this post"
         return error
 
-    def RemovePost():
-
-        return 0
+    def RemovePost(title):
+        error = None
+        deleteQuery = "DELETE FROM `Post` WHERE title = %s"
+        print(curs.execute(deleteQuery, (title, )))
+        error = "Delete Success!!"
+        return error
