@@ -39,7 +39,7 @@
                         <li><a href="{{ url_for('login') }}" class="submenuLink longLink">로그인</a></li>
                         <li><a href="{{ url_for('main_page') }}" class="submenuLink longLink">비밀번호찾기</a></li>
                         {% if auth %}
-                            <li><a href="{{ url_for('administration') }}" class="submenuLink longLink">관리자페이지</a></li>
+                            <li><a href="{{ url_for('admin_page') }}" class="submenuLink longLink">관리자페이지</a></li>
                         {% endif %}
                     {% endif %}
                 </ul>
@@ -56,14 +56,14 @@
                     <div class="container">
                         <div class="row justify-content-center">
                             <div class="col-12 col-md-10 col-lg-8">
-                                <form class="card card-sm">
+                                <form action="/herehere" class="card card-sm" method="post">
                                     <div class="card-body row no-gutters align-items-center">
                                         <div class="col-auto">
                                             <i class="fas fa-search h4 text-body"></i>
                                         </div>
                                         <!--end of col-->
                                         <div class="col">
-                                            <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords">
+                                            <input class="form-control form-control-lg form-control-borderless" name ="search" type="search" placeholder="Search topics or keywords">
                                         </div>
                                         <!--end of col-->
                                         <div class="col-auto">
@@ -91,6 +91,13 @@
             </li>
         </ul>
     </nav>
+    {% for message in get_flashed_messages() %}
+      <br/>
+      <div class="alert alert-info alert-dismissable">
+        <a herf="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+        {{ message }}
+      </div>
+    {% endfor %}
     <img src="{{ url_for('static', filename='img/icon.jpeg') }}">
 <p>안녕 클레오파트라! 세상에서 제일 가는 포테이토칩!</p>
 <br>

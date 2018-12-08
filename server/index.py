@@ -59,7 +59,7 @@ def login():
 
 @app.route("/logout")
 def logout():
-    error = userinfo.UserInfo(session.get['person_id']).Logout()
+    error = userinfo.UserInfo(session.get).Logout()
     if error is False:
         return redirect(url_for('main_page'))
     else:
