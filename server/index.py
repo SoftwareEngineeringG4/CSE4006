@@ -84,9 +84,35 @@ def board_open(board_name):
 @app.route("/admin_page", methods=['POST'])
 def admin_page():
     auth = True
+    error = None
+
     if request.methods == 'POST':
         auth = admin.AdminInfo(session.get['person_id']).CheckAuth()
-    return render_template("admin.html", auth=auth)
+        adminMng = adminManager.Admin()
+
+        if request.form['sub_button'] == 'adminAdd':
+            target_user_id = request.form['user_name']
+            error = adminMng.AdminAppointment(target_user_id)
+
+        elif request.form['sub_button'] == 'adminRemove':
+            target_user_id = request.form['user_name']
+            error = adminMng.AdminRemove(target_user_id)
+
+        elif request.form['sub_button'] == 'boardCreate':
+            target_board_name = request.form['board_name']
+            error = adminMng.boardCreate(target_board_name)
+
+        elif request.form['sub_button'] == 'addToBlackList':
+            target_user_id = request.form['user_name']
+            target_board_name = request.form['board_name']
+            error = adminMng.AddBlackList(target_board_name, target_user_id)
+
+        elif request.form['sub_button'] == 'removeFromBlackList':
+            target_user_id = request.form['user_name']
+            target_board_name = request.form['board_name']
+            error = adminMng.removeFromBlackList(target_board_name, target_user_id)
+
+    return render_template("admin.html", auth=auth, error)
 
 
 @app.route("/write_post/<board_name>", methods=['GET', 'POST'])

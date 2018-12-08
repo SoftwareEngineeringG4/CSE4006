@@ -38,8 +38,7 @@ class Admin():
 
             if userid_[0] == 0 and board_name_[0] == 0:
                 error = "Invalid"
-            elif:
-                blacklist_[0] != 0
+            elif blacklist_[0] != 0:
                 error = "Already Exist"
             else:
                 flash("Added to BlackList")
@@ -70,7 +69,7 @@ class Admin():
 
             if userid_[0] == 0 and board_name_[0] == 0:
                 error = "Invalid"
-            elif: blacklist_[0] == 0:
+            elif blacklist_[0] == 0:
                 error = "No data"
             else:
                 flash("Successfully Removed!")
