@@ -81,8 +81,8 @@ class UserInfo:
         updateQuery = "UPDATE User SET password = %s, name = %s, email = %s\
         idNumber = %s WHERE person_id = %s"
 
-        if "" in [user_id, pwss, user_name, email, identifyNum]:
-            error "No data"
+        if "" in [pwss, user_name, email, identifyNum]:
+            error = "No data"
         else:
             self.selectquery = u"SELECT EXISTS (" + UserInfo.userIdCheck + u")"
             curs.execute(self.selectquery, (self.user_id, ))
@@ -91,7 +91,9 @@ class UserInfo:
                 error = "No ID"
             else:
                 flash("Info Changed!")
-                curs.execute(updateQuery, (pwss, user_name, email, identifyNum, self.user_id, ))
+                curs.execute(updateQuery,
+                             (pwss, user_name, email,
+                              identifyNum, self.user_id, ))
                 conn.commit()
 
         return error
