@@ -106,7 +106,7 @@
         {% for values in board %}
         <tr>
             <td>{{ values[0] }}</td>
-            <td class="tLeft"><a href="{{ url_for('spec_post', board_name=board_name, lists=values) }}">{{ values[1] }}</a></td>
+            <td class="tLeft"><a href="{{ url_for('spec_post', board_name=board_name, title=values[1]) }}">{{ values[1] }}</a></td>
             <td>{{ values[4] }}</td>
             <td>{{ values[3] }}</td>
         </tr>

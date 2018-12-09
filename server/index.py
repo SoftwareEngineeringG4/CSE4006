@@ -43,7 +43,7 @@ def register():
     else:
         return render_template('registration.html', list=defaultList)
 
-@app.route("/register/idValidCheck", method=['POST'])
+@app.route("/register/idValidCheck", methods=['POST'])
 def useridValidCheck():
     error = None
     if request.method == 'POST':
