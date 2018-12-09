@@ -43,6 +43,16 @@ def register():
     else:
         return render_template('registration.html', list=defaultList)
 
+@app.route("/register/idValidCheck", method=['POST'])
+def useridValidCheck():
+    error = None
+    if request.method == 'POST':
+        candidate_user_id = request.form['id']
+        if candidate_user_id == "":
+            error = 'No Data'
+        else:
+            userInfo = userinfo.UserInfo()
+    return
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
