@@ -119,8 +119,8 @@ def spec_post(board_name, title):
                            time=postValue[4])
 
 
-@app.route("/admin_page", methods=['GET','POST'])
-def admin_page():
+@app.route("/admin_request", methods=['GET', 'POST'])
+def admin_request():
     auth = True
     error = None
 
@@ -153,6 +153,12 @@ def admin_page():
 
     return render_template("admin.html",
                            auth=auth, error=error, list=defaultList)
+
+
+@app.route("/admin_page", methods=['GET', 'POST'])
+def admin_page():
+    auth = 0
+    return render_template("admin.html", auth=auth, list=defaultList)
 
 
 @app.route("/write_post/<board_name>", methods=['GET', 'POST'])
