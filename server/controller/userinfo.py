@@ -31,16 +31,17 @@ class UserInfo:
         loginQuery = ("SELECT `name` FROM `User` WHERE `person_id`=\'"
                       + self.user_id + "\'")
         print(loginQuery)
-        self.selectquery = u"SELECT EXISTS (" + UserInfo.userIdCheck + u")"
+        self.selectquery = UserInfo.userIdCheck
         curs.execute(self.selectquery, (self.user_id, ))
         userid_ = curs.fetchone()
+
         if userid_[0] == 0:
             error = "Invalid"
         else:
-            self.selectquery = u"SELECT EXISTS (" + UserInfo.PwssCheck + u")"
-            curs.execute(self.selectquery, (self.user_id, ))
+            self.selectquery = UserInfo.PwssCheck
+            curs.execute(self.selectquery, (userid_, ))
             pwss_ = curs.fetchone()
-            if pwss_[0] == pwss:
+            if pwss_[0] != pwss:
                 error = "Invalid"
                 flash('Invalid')
             else:
@@ -51,7 +52,7 @@ class UserInfo:
                 self.name = curs.fetchone()
                 flash('Welcome ' + self.name[0])
                 error = None
-        print(error)
+
         return error
 
     def Register(self, user_id, pwss, user_name, email, identifyNum):
