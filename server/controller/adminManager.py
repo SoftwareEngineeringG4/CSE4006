@@ -8,7 +8,7 @@ class Admin():
     userIdCheck = u"SELECT `person_id` FROM `User` WHERE `person_id` = %s"
     PwssCheck = u"SELECT `password` FROM `User` WHERE `person_id` = %s"
     boardCheck = u"SELECT `BID` FROM `Board` WHERE `board_name` like %s"
-    blacklistCheck = u"SELECT `BID` FROM `BlakcList` WHERE user_id like %s \
+    blacklistCheck = u"SELECT `BID` FROM `BlackList` WHERE user_id like %s \
     and BID = (SELECT BID from Board where board_name like %s)"
 
     def __init__(self):
@@ -18,7 +18,7 @@ class Admin():
         error = None
 
         InsertToBlackList = u"INSERT INTO `BlackList`(BID, user_id) \
-        VALUES((SELECT BID from Board where board_name = %s), %s)"
+        VALUES((SELECT BID from Board where board_name like %s), %s)"
 
         if "" in [target_board_name, target_user_id]:
             error = "Invalid Input!"
@@ -50,8 +50,8 @@ class Admin():
 
     def RemoveBlackList(self, target_board_name, target_user_id):
         error = None
-        RemoveFromBlackList = u"DELETE FROM BlackList WHERE user_id = %s \
-        and BID = (SELECT BID from Board where board_name = %s)"
+        RemoveFromBlackList = u"DELETE FROM BlackList WHERE user_id like %s \
+        and BID = (SELECT BID from Board where board_name like %s)"
         if "" in [target_board_name, target_user_id]:
             error = "Invalid Input!"
         else:
@@ -90,7 +90,7 @@ class Admin():
             error = "Invalid Input!"
         else:
             self.selectquery = u"SELECT EXISTS (" + self.boardCheck + u")"
-            curs.execute(self.selectquery, (target_board_name, ))
+            curs.execute(self.selectquery, (board_name, ))
             board_name_ = curs.fetchone()
 
             if board_name_[0] == 0:
@@ -103,7 +103,7 @@ class Admin():
 
     def BoardRemove(self, board_name):
         error = None
-        RemoveBoard = u"DELETE FROM Board WHERE board_name = %s"
+        RemoveBoard = u"DELETE FROM Board WHERE board_name like %s"
         if board_name == "":
             error = "Invalid Input!"
         else:
@@ -122,7 +122,7 @@ class Admin():
 
     def AdminAppointment(self, target_user_id):
         error = None
-        GiveAdmin = u"UPDATE User SET auth = 0 WHERE person_id = %s"
+        GiveAdmin = u"UPDATE User SET auth = 0 WHERE person_id like %s"
         if target_user_id == "":
             error = "Invalid Input!"
         else:
@@ -141,7 +141,7 @@ class Admin():
 
     def AdminRemove(self, target_user_id):
         error = None
-        RemoveAdmin = u"UPDATE User SET auth = 1 WHERE person_id = %s"
+        RemoveAdmin = u"UPDATE User SET auth = 1 WHERE person_id like %s"
         if target_user_id == "":
             error = "Invalid Input!"
         else:

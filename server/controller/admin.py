@@ -9,8 +9,8 @@ class AdminInfo:
     def CheckAuth(self):
         error = False
         AuthQuery = "SELECT `auth` FROM `User` WHERE \
-                     `person_id` = " + self.id + ";"
-        curs.execute(AuthQuery)
+                     `person_id` = %s;"
+        curs.execute(AuthQuery, (self.id, ))
         auth_ = curs.fetchone()
         if auth_[0] > 2:
             error = True

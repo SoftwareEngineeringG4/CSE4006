@@ -139,7 +139,7 @@ def admin_request():
 
             elif button_val == 'boardCreate':
                 target_board_name = request.form['board_name']
-                error = adminMng.boardCreate(target_board_name)
+                error = adminMng.BoardCreate(target_board_name)
 
             elif button_val == 'addToBlackList':
                 target_user_id = request.form['user_name']
@@ -150,7 +150,7 @@ def admin_request():
             elif button_val == 'removeFromBlackList':
                 target_user_id = request.form['user_name']
                 target_board_name = request.form['board_name']
-                error = adminMng.removeFromBlackList(target_board_name,
+                error = adminMng.RemoveBlackList(target_board_name,
                                                      target_user_id)
         else:
             error = "No Auth"
