@@ -96,7 +96,8 @@ def check_mypost():
         print(mypost)
         return render_template("index.html", mypost=mypost, list=defaultList)
     else:
-        render_redirect("main.html", 'main_page', "Valid error")
+        error = "Valid error"
+        render_redirect("main.html", 'main_page', error)
 
 
 @app.route("/board/<board_name>", methods=['GET'])
@@ -151,7 +152,7 @@ def admin_request():
                 target_user_id = request.form['user_name']
                 target_board_name = request.form['board_name']
                 error = adminMng.RemoveBlackList(target_board_name,
-                                                     target_user_id)
+                                                 target_user_id)
         else:
             error = "No Auth"
 
@@ -175,11 +176,20 @@ def write_post(board_name):
         writer = session['person_id']
         error = board.AddPost(board_name, title, contents, writer)
         if error is not False:
-            return render_template(board_name+".html",
+            return render_template("write.html",
                                    error=error, auth=auth, list=defaultList)
         else:
-            return render_template(board_name + ".html",
+            return render_template("write.html",
                                    error=error, list=defaultList)
+    else:
+        return render_template("write.html",
+                               error=error, list=defaultList)
+
+
+@app.route("/write_post/<board_name>", methods=['GET', 'POST'])
+def write(board_name):
+    error = None
+    return render_template("write.html", error=error, list=defaultList)
 
 
 @app.route("/modify_post/<board_name>", methods=['POST'])
