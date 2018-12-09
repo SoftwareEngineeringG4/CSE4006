@@ -80,11 +80,20 @@
 <div class="wrap">
 
     <ul class="board_search">
-        <li><input type="radio" name="searchtype" id="search01" checked="checked" /><label for="search01">이름</label></li>
-        <li><input type="radio" name="searchtype" id="search02" /><label for="search02">제목</label></li>
-        <li><input type="radio" name="searchtype" id="search03" /><label for="search03">내용</label></li>
-        <li><input type="text" title="검색어를 입력하세요" /><input type="submit" value="검색" /></li>
-    </ul>
+        <li class="topMenuLi">
+                <a class="menuLink" href="{{ url_for('main_page') }}">HOME</a>
+                <ul class="submenu">
+                    {% if session.logged_in %}
+                        <li><a href="{{ url_for('check_myinfo') }}" class="submenuLink longLink">내정보확인</a></li>
+                        <li><a href="{{ url_for('logout') }}" class="submenuLink longLink">로그아웃</a></li>
+                        <li><a href="{{ url_for('check_mypost') }}" class="submenuLink longLink">내글확인</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('register') }}" class="submenuLink longLink">회원가입</a></li>
+                        <li><a href="{{ url_for('login') }}" class="submenuLink longLink">로그인</a></li>
+                        <li><a href="{{ url_for('main_page') }}" class="submenuLink longLink">비밀번호찾기</a></li>
+                    {% endif %}
+                </ul>
+            </li>
 
     <table width="100%" border="0" cellspacing="0" cellpadding="0" summary="공지사항을 나타낸 표" class="board_list">
         <caption>{{ board_name }}</caption>
