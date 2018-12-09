@@ -125,7 +125,7 @@ def admin_request():
     error = None
 
     if request.method == 'POST':
-        auth = admin.AdminInfo(session.get).CheckAuth()
+        auth = admin.AdminInfo(session['person_id']).CheckAuth()
         if auth == 0:
             adminMng = adminManager.Admin()
             button_val = request.form['sub_button']
@@ -144,7 +144,8 @@ def admin_request():
             elif button_val == 'addToBlackList':
                 target_user_id = request.form['user_name']
                 target_board_name = request.form['board_name']
-                error = adminMng.AddBlackList(target_board_name, target_user_id)
+                error = adminMng.AddBlackList(target_board_name,
+                                              target_user_id)
 
             elif button_val == 'removeFromBlackList':
                 target_user_id = request.form['user_name']
