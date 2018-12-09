@@ -1,5 +1,5 @@
 from header import app
-from flask import render_template, url_for, redirect, request, session
+from flask import render_template, url_for, redirect, request, session, flash
 from controller import userinfo, admin, adminManager, board
 from controller import boardManager, search, userinfoManager
 #  from db.dbconn import curs
@@ -127,7 +127,9 @@ def admin_request():
 
     if request.method == 'POST':
         auth = admin.AdminInfo(session['person_id']).CheckAuth()
-        if auth == 0:
+        print("auth")
+        print(auth)
+        if auth == True:
             adminMng = adminManager.Admin()
             button_val = request.form['sub_button']
             if button_val == 'adminAdd':
@@ -155,6 +157,8 @@ def admin_request():
                                                  target_user_id)
         else:
             error = "No Auth"
+        if error != None:
+            flash(error)
 
     return render_template("admin.html",
                            auth=auth, error=error, list=defaultList)
