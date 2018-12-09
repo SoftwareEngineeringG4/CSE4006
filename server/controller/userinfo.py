@@ -35,8 +35,9 @@ class UserInfo:
         curs.execute(self.selectquery, (self.user_id, ))
         userid_ = curs.fetchone()
 
-        if userid_[0] == 0:
+        if userid_ == None:
             error = "Invalid"
+            flash("There is no such ID")
         else:
             self.selectquery = UserInfo.PwssCheck
             curs.execute(self.selectquery, (userid_, ))
