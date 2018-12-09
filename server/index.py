@@ -95,20 +95,16 @@ def board_open(board_name):
                            list=defaultList, board=list, board_name=board_name)
 
 
-@app.route("/post/<board_name>/<path:lists>")
-def spec_post(board_name, lists):
-    '''
-    print(lists.replace(")", "").replace("(","").replace("'", "").split(","))
-    print(board_name)
-    title = lists[1]
-    contents = lists[2]
-    writer = lists[4]
-    print(title)
-    print(contents)
-    '''
+@app.route("/post/<board_name>/<title>")
+def spec_post(board_name, title):
+    postValue = board.Board(board_name, 1).GetPost(title)
+    print(postValue)
     return render_template("post.html", list=defaultList,
                            board_name=board_name,
-                           title=title, contents=contents, writer=writer)
+                           title=postValue[1],
+                           contents=postValue[2],
+                           writer=postValue[3],
+                           time=postValue[4])
 
 
 @app.route("/admin_page", methods=['POST'])
@@ -183,6 +179,10 @@ def modify_post(board_name):
 
 @app.route("/search", methods=['GET', 'POST'])
 def search_all():
-    search_value = request.form['aaaa']
+    search_value = request.form['search']
+    sendData = []
+    for name in defaultList:
+        sendData += search.Search(search_value).FindPost(name[1])
     return render_template("search.html",
-                           search=search_value, list=defaultList)
+                           values=sendData, list=defaultList,
+                           keyword=search_value.encode("utf-8"))
