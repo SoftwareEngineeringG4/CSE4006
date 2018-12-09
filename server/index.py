@@ -124,7 +124,7 @@ def admin_page():
     auth = True
     error = None
 
-    if request.methods == 'POST':
+    if request.method == 'POST':
         auth = admin.AdminInfo(session.get).CheckAuth()
         adminMng = adminManager.Admin()
         button_val = request.form['sub_button']
