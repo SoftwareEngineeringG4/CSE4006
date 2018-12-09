@@ -1,4 +1,4 @@
-from flask import redirect, url_for, flash, session
+from flask import flash, session
 from db.dbconn import curs, conn
 
 
@@ -26,30 +26,34 @@ class UserInfo:
         self.selectquery = ""
         self.query = ""
 
-    def Login(self, pwss):
+def Login(self, pwss):
         error = None
         loginQuery = ("SELECT `name` FROM `User` WHERE `person_id`=\'"
                       + self.user_id + "\'")
         print(loginQuery)
-        self.selectquery = u"SELECT EXISTS (" + UserInfo.userIdCheck + u")"
-        print(self.user_id)
+        self.selectquery = UserInfo.userIdCheck
         curs.execute(self.selectquery, (self.user_id, ))
         userid_ = curs.fetchone()
-        if userid_[0] == 0:
+
+        if userid_ == None:
             error = "Invalid"
+            flash("There is no such ID")
         else:
-            self.selectquery = u"SELECT EXISTS (" + UserInfo.PwssCheck + u")"
-            curs.execute(self.selectquery, (self.user_id, ))
+            self.selectquery = UserInfo.PwssCheck
+            curs.execute(self.selectquery, (userid_, ))
             pwss_ = curs.fetchone()
-            if pwss_[0] == pwss:
+            if pwss_[0] != pwss:
                 error = "Invalid"
+                flash('Invalid')
             else:
                 session['logged_in'] = True
                 session['person_id'] = self.user_id
                 self.signed_in = True
                 curs.execute(loginQuery.encode("utf-8"))
                 self.name = curs.fetchone()
-                flash('Welcom ' + self.name[0])
+                flash('Welcome ' + self.name[0])
+                error = None
+
         return error
 
     def Register(self, user_id, pwss, user_name, email, identifyNum):
@@ -75,16 +79,51 @@ class UserInfo:
                 error = "Already Exist"
         return error
 
+    def idValidCheck(self, candidate_user_id):
+        error = None
+        message = 0
+
+        if candidate_user_id == "":
+            error = "No Input"
+        else:
+            self.selectquery = u"SELECT EXISTS (" + UserInfo.userIdCheck + u")"
+            curs.execute(self.selectquery, (candidate_user_id, ))
+            userid_ = curs.fetchone()
+
+            if userid_[0] == 0:
+                message = 1
+            else:
+                message = 0
+
+        return message, error
+
     def ChangeUserInfo(self):
         error = None
         return redirect(url_for('mypage'))
 
+
     def Logout(self):
+        error = None
         print("Check Logout...")
-        try:
-            if self.user_id:
-                session.pop('logged_in', None)
-                self.sign_in = False
-            return True
-        except:
-            return True
+        if self.user_id:
+            session.clear()
+            self.sign_in = False
+            flash('logged out')
+            error = "logout!!"
+        return error
+
+    def GetMyInfo(self):
+        myinfoQuery = "SELECT password, name, email, idNumber\
+                    FROM User WHERE person_id = %s"
+
+        curs.execute(myinfoQuery, (self.user_id, ))
+        values = curs.fetchall()[0]
+        return values
+
+    def GetMyPost(self):
+        myinfoQuery = "SELECT title, contents, write_time, writer \
+                    FROM Post WHERE writer = %s"
+
+        curs.execute(myinfoQuery, (self.user_id, ))
+        values = curs.fetchall()
+        return values

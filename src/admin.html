@@ -31,13 +31,13 @@
                         <li><a href="{{ url_for('check_myinfo') }}" class="submenuLink longLink">내정보확인</a></li>
                         <li><a href="{{ url_for('logout') }}" class="submenuLink longLink">로그아웃</a></li>
                         <li><a href="{{ url_for('check_mypost') }}" class="submenuLink longLink">내글확인</a></li>
+                        {% if auth %}
+                            <li><a href="{{ url_for('admin_page') }}" class="submenuLink longLink">관리자페이지</a></li>
+                        {% endif %}
                     {% else %}
                         <li><a href="{{ url_for('register') }}" class="submenuLink longLink">회원가입</a></li>
                         <li><a href="{{ url_for('login') }}" class="submenuLink longLink">로그인</a></li>
                         <li><a href="{{ url_for('main_page') }}" class="submenuLink longLink">비밀번호찾기</a></li>
-                        {% if auth %}
-                            <li><a href="{{ url_for('admin_page') }}" class="submenuLink longLink">관리자페이지</a></li>
-                        {% endif%}
                     {% endif %}
                 </ul>
         </li>
@@ -77,17 +77,11 @@
                 </div>
             </ul>
         </li>
-        <li>|</li>
-        <li class="topMenuLi">
-            <a class="menuLink" href="index.html">게시판1</a>
-        <li>|</li>
-        <li class="topMenuLi">
-            <a class="menuLink" href="index.html">게시판2</a>
-        </li>
-        <li>|</li>
-        <li class="topMenuLi">
-            <a class="menuLink" href="index.html">게시판3</a>
-        </li>
+        {% for listValue in list %}
+            <li>|</li>
+            <li class="topMenuLi">
+                <a class="menuLink" href="{{ url_for('board_open', board_name=listValue[1]) }}">{{ listValue[1] }}</a>
+        {% endfor %}
     </ul>
 </nav>
 
@@ -100,7 +94,6 @@
         {{ message }}
       </div>
 {% endfor %}
-{% if auth %}
 <table border="1">
 
     <tr>
@@ -110,50 +103,52 @@
     </tr>
 
     <tr>
-        <form action="/directory_here!" method="post">
+        <form action="{{ url_for('admin_request') }}" method="POST">
         <td>관리자임명</td>
         <td><input type="text" name="user_name" size="5" style="width:100%; border: 0;"></td>
         <td >X</td>
-        <td><button type="submit">등록</button></td>
+        <td><button type="submit" name="sub_button" value="adminAdd">등록</button></td>
         </form>
     </tr>
 
     <tr>
-        <form action="/directory_here!" method="post">
+        <form action="{{ url_for('admin_request') }}" method="POST">
+        <td>관리자탈퇴</td>
+        <td><input type="text" name="user_name" size="5" style="width:100%; border: 0;"></td>
+        <td >X</td>
+        <td><button type="submit" name="sub_button" value="adminRemove">등록</button></td>
+        </form>
+    </tr>
+
+    <tr>
+        <form action="{{ url_for('admin_request') }}" method="POST">
         <td>게시판 생성</td>
         <td >X</td>
         <td><input type="text" name="board_name" size="5" style="width:100%; border: 0;"></td>
-        <td><button type="submit">등록</button></td>
+        <td><button type="submit" name="sub_button" value="boardCreate">등록</button></td>
         </form>
 
     </tr>
 
     <tr>
-        <form action="/directory_here!" method="post">
+        <form action="{{ url_for('admin_request') }}" method="POST">
         <td>블랙 리스트 추가</td>
         <td><input type="text" name="user_name" size="5" style="width:100%; border: 0;"></td>
         <td><input type="text" name="board_name" size="5" style="width:100%; border: 0;"></td>
-        <td><button type="submit">등록</button></td>
+        <td><button type="submit" name="sub_button" value="addToBlackList">등록</button></td>
         </form>
     </tr>
 
     <tr>
-        <form action="/directory_here!" method="post">
+        <form action="{{ url_for('admin_request') }}" method="POST">
         <td>블랙 리스트 제거</td>
         <td><input type="text" name="user_name" size="5" style="width:100%; border: 0;"></textarea></td>
         <td><input type="text" name="board_name" size="5" style="width:100%; border: 0;"></textarea></td>
-        <td><button type="submit">등록</button></td>
+        <td><button type="submit" name="sub_button" value="removeFromBlackList">등록</button></td>
         </form>
     </tr>
 
 </table>
-{% else %}
-<h3>
-    <p>
-        InValid Authentication
-    </p>
-</h3>
-
 
 </body>
 </html>

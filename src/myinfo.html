@@ -28,19 +28,19 @@
     <nav id="topMenu">
         <ul>
             <li class="topMenuLi">
-                <a class="menuLink" href="main.html">HOME</a>
+                <a class="menuLink" href="{{ url_for('main_page') }}">HOME</a>
                 <ul class="submenu">
                     {% if session.logged_in %}
                         <li><a href="{{ url_for('check_myinfo') }}" class="submenuLink longLink">내정보확인</a></li>
                         <li><a href="{{ url_for('logout') }}" class="submenuLink longLink">로그아웃</a></li>
                         <li><a href="{{ url_for('check_mypost') }}" class="submenuLink longLink">내글확인</a></li>
+                        {% if auth %}
+                            <li><a href="{{ url_for('admin_page') }}" class="submenuLink longLink">관리자페이지</a></li>
+                        {% endif%}
                     {% else %}
                         <li><a href="{{ url_for('register') }}" class="submenuLink longLink">회원가입</a></li>
                         <li><a href="{{ url_for('login') }}" class="submenuLink longLink">로그인</a></li>
                         <li><a href="{{ url_for('main_page') }}" class="submenuLink longLink">비밀번호찾기</a></li>
-                        {% if auth %}
-                            <li><a href="{{ url_for('admin_page') }}" class="submenuLink longLink">관리자페이지</a></li>
-                        {% endif %}
                     {% endif %}
                 </ul>
             </li>
@@ -104,7 +104,7 @@
         <div class="page-header text-center">
             <h1>내 정보수정</h1>
         </div>
-        <form class="form-horizontal">
+        <form class="form-horizontal" action="{{ url_for('') }}">
             <div class="form-group">
                 <label class="col-sm-3 control-label" for="inputNumberCheck">아이디 입력</label>
                 <div class="col-sm-6">

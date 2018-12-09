@@ -8,7 +8,7 @@ class Admin():
     userIdCheck = u"SELECT `person_id` FROM `User` WHERE `person_id` = %s"
     PwssCheck = u"SELECT `password` FROM `User` WHERE `person_id` = %s"
     boardCheck = u"SELECT `BID` FROM `Board` WHERE `board_name` like %s"
-    blacklistCheck = u"SELECT `BID` FROM `BlakcList` WHERE user_id like %s \
+    blacklistCheck = u"SELECT `BID` FROM `BlackList` WHERE user_id like %s \
     and BID = (SELECT BID from Board where board_name like %s)"
 
     def __init__(self):
@@ -90,7 +90,7 @@ class Admin():
             error = "Invalid Input!"
         else:
             self.selectquery = u"SELECT EXISTS (" + self.boardCheck + u")"
-            curs.execute(self.selectquery, (target_board_name, ))
+            curs.execute(self.selectquery, (board_name, ))
             board_name_ = curs.fetchone()
 
             if board_name_[0] == 0:

@@ -11,17 +11,20 @@ class Search:
     '''
 
     def __init__(self, keyword):
-        self.search_word = keyword
+        self.search_word = "%" + keyword + "%"
         self.board_num = 3
         self.post_name = ""
 
-    def FindPost(self):
-        boardList = Board.GetPostList()
+    def FindPost(self, board_name):
+        postList = Board.GetPostList(board_name)
+        print(postList)
         findList = []
-        for board in boardList:
-            searchQuery = "SELECT `title`, `contents`, `write_time`, `writer` \
-                    FROM " + board + " WHERE `title` LIKE \'%" + self.search_word + "%\' OR \
-                    `contents` LIKE \'%" + self.search_word + "%\';"
-            curs.execute(searchQuery)
+        for board in postList:
+            searchQuery = u"SELECT title, contents, write_time, writer FROM\
+            Post WHERE BID = (SELECT BID FROM Board WHERE board_name = %s)\
+            AND contents LIKE %s OR title LIKE %s;"
+            curs.execute(searchQuery,
+                         (board_name, self.search_word, self.search_word, ))
             findList += curs.fetchall()
         return findList
+
