@@ -214,4 +214,4 @@ def search_all():
     print(sendData)
     return render_template("search.html",
                            values=sendData, list=defaultList,
-                           keyword=search_value.encode("utf-8"))
+                           keyword=search_value)

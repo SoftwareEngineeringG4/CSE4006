@@ -84,33 +84,30 @@
 <!------ Include the above in your HEAD tag ---------->
 
 <div class="container">
-    {% for post in values %}
     <hgroup class="mb20">
 		<h1>Search Results</h1>
-		<h2 class="lead"><strong class="text-danger">3/strong> results were found for the search for <strong class="text-danger">{{ keyword }}</strong></h2>
+		<h2 class="lead"><strong class="text-danger"></strong> Searching Results were found for the search for <strong class="text-danger">{{ keyword }}</strong></h2>
 	</hgroup>
-    
+    {% for post in values %}
     <section class="col-xs-12 col-sm-6 col-md-12">
-        {% for value in post %}
 		<article class="search-result row">
 			<div class="col-xs-12 col-sm-12 col-md-3">
 				<a href="#" title="thumbnail" class="thumbnail"><img src="{{ url_for('static', filename='img/computer.jpeg') }}"></a>
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-2">
 				<ul class="meta-search">
-					<li><i class="glyphicon glyphicon-calendar"></i> <span>{{ value }}</span></li>
-					<li><i class="glyphicon glyphicon-time"></i> <span>{{ value[3] }}</span></li>
-					<li><i class="glyphicon glyphicon-tags"></i> <span>{{ value[4] }}</span></li>
+					<li><i class="glyphicon glyphicon-calendar"></i> <span>{{ post[3].date() }}</span></li>
+					<li><i class="glyphicon glyphicon-time"></i> <span>{{ post[3].time() }}</span></li>
+					<li><i class="glyphicon glyphicon-tags"></i> <span>{{ post[4] }}</span></li>
 				</ul>
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-7 excerpet">
-				<h3><a href="#" title="">{{ value[1] }}</a></h3>
-				<p>{{ value[2] }}</p>
+				<h3><a href="#" title="">{{ post[1] }}</a></h3>
+				<p>{{ post[2] }}</p>
 
 			</div>
 			<span class="clearfix borda"></span>
 		</article>
-        {% endfor %}
 	</section>
     {% endfor %}
 </div>
