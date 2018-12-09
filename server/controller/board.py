@@ -30,8 +30,9 @@ class Board:
         list = curs.fetchall()
         return list
 
-    def AddBoard(self):
-        InsertBoard = "INSERT INTO `Board` (`board_name`, `write_auth`) VALUES \
-                       (" + self.board_name + self.write_auth + ");"
-        curs.execute(InsertBoard)
-        curs.commit()
+    def GetPost(self, title):
+        postQuery = "SELECT BID, title, contents, writer, write_time FROM Post WHERE BID = \
+        (SELECT BID FROM Board WHERE board_name = %s) AND title = %s;"
+        curs.execute(postQuery, (self.board_name, title, ))
+        thisPost = curs.fetchone()
+        return thisPost
