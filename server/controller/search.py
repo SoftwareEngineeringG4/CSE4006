@@ -11,7 +11,7 @@ class Search:
     '''
 
     def __init__(self, keyword):
-        self.search_word = keyword
+        self.search_word = ['%' + keyword + '%']
         self.board_num = 3
         self.post_name = ""
 
