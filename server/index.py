@@ -80,7 +80,7 @@ def logout():
         return render_redirect('main.html', 'main_page', error)
 
 
-@app.route("/MyInfo", methods=['POST'])
+@app.route("/MyInfo", methods=['GET', 'POST'])
 def check_myinfo():
     myinfo = userinfoManager(session['person_id']).userInfoManager()
     print(myinfo)
