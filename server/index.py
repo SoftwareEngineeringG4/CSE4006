@@ -125,31 +125,34 @@ def admin_request():
     error = None
 
     if request.method == 'POST':
-        auth = admin.AdminInfo(session['person_id']).CheckAuth()
-        adminMng = adminManager.Admin()
-        button_val = request.form['sub_button']
-        if button_val == 'adminAdd':
-            target_user_id = request.form['user_name']
-            error = adminMng.AdminAppointment(target_user_id)
+        auth = admin.AdminInfo(session.get).CheckAuth()
+        if auth == 0:
+            adminMng = adminManager.Admin()
+            button_val = request.form['sub_button']
+            if button_val == 'adminAdd':
+                target_user_id = request.form['user_name']
+                error = adminMng.AdminAppointment(target_user_id)
 
-        elif button_val == 'adminRemove':
-            target_user_id = request.form['user_name']
-            error = adminMng.AdminRemove(target_user_id)
+            elif button_val == 'adminRemove':
+                target_user_id = request.form['user_name']
+                error = adminMng.AdminRemove(target_user_id)
 
-        elif button_val == 'boardCreate':
-            target_board_name = request.form['board_name']
-            error = adminMng.boardCreate(target_board_name)
+            elif button_val == 'boardCreate':
+                target_board_name = request.form['board_name']
+                error = adminMng.boardCreate(target_board_name)
 
-        elif button_val == 'addToBlackList':
-            target_user_id = request.form['user_name']
-            target_board_name = request.form['board_name']
-            error = adminMng.AddBlackList(target_board_name, target_user_id)
+            elif button_val == 'addToBlackList':
+                target_user_id = request.form['user_name']
+                target_board_name = request.form['board_name']
+                error = adminMng.AddBlackList(target_board_name, target_user_id)
 
-        elif button_val == 'removeFromBlackList':
-            target_user_id = request.form['user_name']
-            target_board_name = request.form['board_name']
-            error = adminMng.removeFromBlackList(target_board_name,
-                                                 target_user_id)
+            elif button_val == 'removeFromBlackList':
+                target_user_id = request.form['user_name']
+                target_board_name = request.form['board_name']
+                error = adminMng.removeFromBlackList(target_board_name,
+                                                     target_user_id)
+        else:
+            error = "No Auth"
 
     return render_template("admin.html",
                            auth=auth, error=error, list=defaultList)

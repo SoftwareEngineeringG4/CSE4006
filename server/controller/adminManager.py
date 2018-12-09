@@ -18,7 +18,7 @@ class Admin():
         error = None
 
         InsertToBlackList = u"INSERT INTO `BlackList`(BID, user_id) \
-        VALUES((SELECT BID from Board where board_name like %s), %s)"
+        VALUES((SELECT BID from Board where board_name = %s), %s)"
 
         if "" in [target_board_name, target_user_id]:
             error = "Invalid Input!"
@@ -50,8 +50,8 @@ class Admin():
 
     def RemoveBlackList(self, target_board_name, target_user_id):
         error = None
-        RemoveFromBlackList = u"DELETE FROM BlackList WHERE user_id like %s \
-        and BID = (SELECT BID from Board where board_name like %s)"
+        RemoveFromBlackList = u"DELETE FROM BlackList WHERE user_id = %s \
+        and BID = (SELECT BID from Board where board_name = %s)"
         if "" in [target_board_name, target_user_id]:
             error = "Invalid Input!"
         else:
@@ -103,7 +103,7 @@ class Admin():
 
     def BoardRemove(self, board_name):
         error = None
-        RemoveBoard = u"DELETE FROM Board WHERE board_name like %s"
+        RemoveBoard = u"DELETE FROM Board WHERE board_name = %s"
         if board_name == "":
             error = "Invalid Input!"
         else:
@@ -122,7 +122,7 @@ class Admin():
 
     def AdminAppointment(self, target_user_id):
         error = None
-        GiveAdmin = u"UPDATE User SET auth = 0 WHERE person_id like %s"
+        GiveAdmin = u"UPDATE User SET auth = 0 WHERE person_id = %s"
         if target_user_id == "":
             error = "Invalid Input!"
         else:
@@ -141,7 +141,7 @@ class Admin():
 
     def AdminRemove(self, target_user_id):
         error = None
-        RemoveAdmin = u"UPDATE User SET auth = 1 WHERE person_id like %s"
+        RemoveAdmin = u"UPDATE User SET auth = 1 WHERE person_id = %s"
         if target_user_id == "":
             error = "Invalid Input!"
         else:
