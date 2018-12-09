@@ -26,7 +26,7 @@ class UserInfo:
         self.selectquery = ""
         self.query = ""
 
-    def Login(self, pwss):
+def Login(self, pwss):
         error = None
         loginQuery = ("SELECT `name` FROM `User` WHERE `person_id`=\'"
                       + self.user_id + "\'")
@@ -63,6 +63,7 @@ class UserInfo:
             error = "Filed is Empty!"
         else:
             self.selectquery = u"SELECT EXISTS (" + UserInfo.checkEmail + u")"
+            print(email)
             curs.execute(self.selectquery, (email, ))
             email_ = curs.fetchone()
             self.selectquery = u"SELECT EXISTS (" + UserInfo.checkName + u")"
