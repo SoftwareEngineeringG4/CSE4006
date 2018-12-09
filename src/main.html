@@ -28,7 +28,7 @@
     <nav id="topMenu">
         <ul>
             <li class="topMenuLi">
-                <a class="menuLink" href="{{ url_for('register') }}">HOME</a>
+                <a class="menuLink" href="{{ url_for('main_page') }}">HOME</a>
                 <ul class="submenu">
                     {% if session.logged_in %}
                         <li><a href="{{ url_for('check_myinfo') }}" class="submenuLink longLink">내정보확인</a></li>

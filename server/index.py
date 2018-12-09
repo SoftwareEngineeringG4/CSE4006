@@ -53,7 +53,7 @@ def useridValidCheck():
             error = 'No Data'
         else:
             userInfo = userinfo.UserInfo()
-    return
+    return error
 
 
 @app.route("/login", methods=['GET', 'POST'])
