@@ -12,6 +12,6 @@ class AdminInfo:
                      `person_id` = %s;"
         curs.execute(AuthQuery, (self.id, ))
         auth_ = curs.fetchone()
-        if auth_[0] > 2:
+        if auth_[0] == 0:
             error = True
         return error
