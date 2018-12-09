@@ -119,7 +119,7 @@ def spec_post(board_name, title):
                            time=postValue[4])
 
 
-@app.route("/admin_page", methods=['POST'])
+@app.route("/admin_page", methods=['GET','POST'])
 def admin_page():
     auth = True
     error = None
