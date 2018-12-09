@@ -20,7 +20,7 @@ def render_redirect(template, url, error):
 def main_page():
     auth = 0
     if request.method == 'POST':
-        auth = admin.AdminInfo(session.get['person_id']).CheckAuth()
+        auth = admin.AdminInfo(session['person_id']).CheckAuth()
     return render_template('main.html', auth=auth, list=defaultList)
 
 
@@ -125,7 +125,7 @@ def admin_request():
     error = None
 
     if request.method == 'POST':
-        auth = admin.AdminInfo(session.get).CheckAuth()
+        auth = admin.AdminInfo(session['person_id']).CheckAuth()
         adminMng = adminManager.Admin()
         button_val = request.form['sub_button']
         if button_val == 'adminAdd':
