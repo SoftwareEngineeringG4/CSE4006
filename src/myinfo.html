@@ -78,17 +78,11 @@
                     </div>
                 </ul>
             </li>
+            {% for listValue in list %}
             <li>|</li>
             <li class="topMenuLi">
-                <a class="menuLink" href="index.html">게시판1</a>
-            <li>|</li>
-            <li class="topMenuLi">
-                <a class="menuLink" href="index.html">게시판2</a>
-            </li>
-            <li>|</li>
-            <li class="topMenuLi">
-                <a class="menuLink" href="index.html">게시판3</a>
-            </li>
+                <a class="menuLink" href="{{ url_for('board_open', board_name=listValue[1]) }}">{{ listValue[1] }}</a>
+            {% endfor %}
         </ul>
     </nav>
 </center>
@@ -109,7 +103,7 @@
                 <label class="col-sm-3 control-label" for="inputNumberCheck">아이디 입력</label>
                 <div class="col-sm-6">
                     <div class="input-group">
-                        <input class="form-control" id="inputNumberCheck" type="text" placeholder="아이디">
+                        <input class="form-control" id="inputNumberCheck" type="text" placeholder="{{ myinfo[0] }}">
                         <span class="input-group-btn">
                 <button class="btn btn-success" type="button" disabled>중복확인<i class="fa fa-edit spaceLeft"></i></button>
               </span>
@@ -120,19 +114,19 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label" for="inputName">이름</label>
                 <div class="col-sm-6">
-                    <input class="form-control" id="inputName" type="text" placeholder="이름">
+                    <input class="form-control" id="inputName" type="text" placeholder="{{ myinfo[2] }}">
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label" for="inputName">주민등록번호</label>
                 <div class="col-sm-6">
-                    <input class="form-control" id="id_number" type="text" placeholder="주민등록번호">
+                    <input class="form-control" id="id_number" type="text" placeholder="{{ myinfo[3] }}">
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label" for="inputEmail">이메일</label>
                 <div class="col-sm-6">
-                    <input class="form-control" id="inputEmail" type="email" placeholder="이메일">
+                    <input class="form-control" id="inputEmail" type="email" placeholder="{{ myinfo[3] }}">
                 </div>
             </div>
             <div class="form-group">

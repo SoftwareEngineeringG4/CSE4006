@@ -26,7 +26,7 @@ class UserInfo:
         self.selectquery = ""
         self.query = ""
 
-def Login(self, pwss):
+    def Login(self, pwss):
         error = None
         loginQuery = ("SELECT `name` FROM `User` WHERE `person_id`=\'"
                       + self.user_id + "\'")
@@ -35,9 +35,8 @@ def Login(self, pwss):
         curs.execute(self.selectquery, (self.user_id, ))
         userid_ = curs.fetchone()
 
-        if userid_ == None:
+        if userid_[0] == 0:
             error = "Invalid"
-            flash("There is no such ID")
         else:
             self.selectquery = UserInfo.PwssCheck
             curs.execute(self.selectquery, (userid_, ))
@@ -53,7 +52,6 @@ def Login(self, pwss):
                 self.name = curs.fetchone()
                 flash('Welcome ' + self.name[0])
                 error = None
-
         return error
 
     def Register(self, user_id, pwss, user_name, email, identifyNum):
@@ -63,7 +61,6 @@ def Login(self, pwss):
             error = "Filed is Empty!"
         else:
             self.selectquery = u"SELECT EXISTS (" + UserInfo.checkEmail + u")"
-            print(email)
             curs.execute(self.selectquery, (email, ))
             email_ = curs.fetchone()
             self.selectquery = u"SELECT EXISTS (" + UserInfo.checkName + u")"
@@ -101,7 +98,6 @@ def Login(self, pwss):
         error = None
         return redirect(url_for('mypage'))
 
-
     def Logout(self):
         error = None
         print("Check Logout...")
@@ -113,16 +109,14 @@ def Login(self, pwss):
         return error
 
     def GetMyInfo(self):
-        myinfoQuery = "SELECT password, name, email, idNumber\
-                    FROM User WHERE person_id = %s"
+        myinfoQuery = "SELECT * FROM User WHERE person_id = %s"
 
         curs.execute(myinfoQuery, (self.user_id, ))
         values = curs.fetchall()[0]
         return values
 
     def GetMyPost(self):
-        myinfoQuery = "SELECT title, contents, write_time, writer \
-                    FROM Post WHERE writer = %s"
+        myinfoQuery = "SELECT * FROM Post WHERE writer = %s"
 
         curs.execute(myinfoQuery, (self.user_id, ))
         values = curs.fetchall()

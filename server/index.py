@@ -1,5 +1,5 @@
 from header import app
-from flask import render_template, url_for, redirect, request, session, flash
+from flask import render_template, url_for, redirect, request, session
 from controller import userinfo, admin, adminManager, board
 from controller import boardManager, search, userinfoManager
 #  from db.dbconn import curs
@@ -84,20 +84,16 @@ def logout():
 
 @app.route("/MyInfo", methods=['GET', 'POST'])
 def check_myinfo():
-    myinfo = userinfoManager(session['person_id']).userInfoManager()
+    myinfo = userinfo.UserInfo(session['person_id']).GetMyInfo()
     print(myinfo)
     return render_template("myinfo.html", myinfo=myinfo, list=defaultList)
 
 
 @app.route("/MyPosts", methods=['GET', 'POST'])
 def check_mypost():
-    if request.method == 'POST':
-        mypost = userinfo.getMyInfo()
-        print(mypost)
-        return render_template("index.html", mypost=mypost, list=defaultList)
-    else:
-        error = "Valid error"
-        render_redirect("main.html", 'main_page', error)
+    mypost = userinfo.UserInfo(session['person_id']).GetMyPost()
+    print(mypost)
+    return render_template("index.html", mypost=mypost, list=defaultList)
 
 
 @app.route("/board/<board_name>", methods=['GET'])
@@ -127,9 +123,7 @@ def admin_request():
 
     if request.method == 'POST':
         auth = admin.AdminInfo(session['person_id']).CheckAuth()
-        print("auth")
-        print(auth)
-        if auth == True:
+        if auth == 0:
             adminMng = adminManager.Admin()
             button_val = request.form['sub_button']
             if button_val == 'adminAdd':
@@ -157,8 +151,6 @@ def admin_request():
                                                  target_user_id)
         else:
             error = "No Auth"
-        if error != None:
-            flash(error)
 
     return render_template("admin.html",
                            auth=auth, error=error, list=defaultList)
@@ -219,6 +211,7 @@ def search_all():
     sendData = []
     for name in defaultList:
         sendData += search.Search(search_value).FindPost(name[1])
+    print(sendData)
     return render_template("search.html",
                            values=sendData, list=defaultList,
                            keyword=search_value.encode("utf-8"))

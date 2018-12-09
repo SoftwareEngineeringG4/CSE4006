@@ -66,7 +66,7 @@
             <li>|</li>
             <li class="topMenuLi">
                 <a class="menuLink" href="{{ url_for('board_open', board_name=listValue[1]) }}">{{ listValue[1] }}</a>
-            {% endfor %}>
+            {% endfor %}
         </ul>
     </nav>
 </center>
@@ -90,24 +90,14 @@
         </tr>
         </thead>
         <tbody>
+        {% for Post in mypost %}
         <tr>
-            <td>1</td>
-            <td>Hi There</td>
-            <td>KyuHan</td>
-            <td>2018.11.05</td>
+            <td>{{ Post[0] }}</td>
+            <td>{{ Post[1] }}</td>
+            <td>{{ Post[4] }}</td>
+            <td>{{ Post[3] }}</td>
         </tr>
-        <tr>
-            <td>2</td>
-            <td>So Boring</td>
-            <td>KyuHan</td>
-            <td>2018.11.06</td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>Wait there</td>
-            <td>KyuHan</td>
-            <td>2018.11.07</td>
-        </tr>
+        {% endfor %}
         </tbody>
     </table>
     <hr/>
